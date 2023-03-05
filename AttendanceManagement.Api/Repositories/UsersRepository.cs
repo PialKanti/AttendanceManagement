@@ -25,7 +25,7 @@ namespace AttendanceManagement.Api.Repositories
             var result = await _userManager.CreateAsync(user, userDto.Password);
             if (result.Succeeded)
             {
-                await AssignRole(user, Roles.User.ToString());
+                await AssignRole(user, Roles.Employee.ToString());
             }
             return result;
         }
