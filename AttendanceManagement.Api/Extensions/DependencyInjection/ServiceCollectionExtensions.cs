@@ -101,6 +101,7 @@ namespace AttendanceManagement.Api.Extensions.DependencyInjection
         {
             services.AddScoped<IUsersRepository<ApplicationUser>, UsersRepository>();
             services.AddScoped<JwtTokenService, JwtTokenService>();
+            services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
             return services;
         }
