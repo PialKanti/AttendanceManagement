@@ -157,25 +157,46 @@ namespace AttendanceManagement.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Attendances",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    EntryTimestamp = table.Column<long>(type: "bigint", nullable: false),
+                    ExitTimestamp = table.Column<long>(type: "bigint", nullable: false),
+                    EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Month = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attendances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Attendances_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "64ada571-fb10-4f24-b608-042e3f1b34dd", "ceed144d-e178-4071-a416-cd33f30f7044", "Hr", "HR" },
-                    { "b1ed9659-aa09-4c63-b734-b8c355180301", "df738ed2-37e8-448a-8866-4b99d93a569c", "Admin", "ADMIN" },
-                    { "c4b7fc5e-42e3-469e-8175-a469b00452ab", "6ee6fcaf-fcd8-403c-880f-e8a345906f4e", "Employee", "EMPLOYEE" }
+                    { "853346e1-d4f4-472c-95f7-327e26814e73", "3cc38019-9d79-4468-a8bb-7abbb7b761f1", "Hr", "HR" },
+                    { "dd021bef-c544-40bd-8d4a-389ce42aaa18", "488fb64b-83a9-4bc5-94a0-7642bf5f6dea", "Employee", "EMPLOYEE" },
+                    { "e0a1738f-b770-49c5-9818-935f62cba7a8", "5b776d39-aad9-404b-8ce3-786631999226", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "4603e2db-59f4-449a-9014-61c1bd403939", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "10c3731b-f4a3-4aad-a83b-bd4fed97781d", "admin@test.com", false, "Default", "Admin", false, null, "ADMIN@TEST.COM", "ADMIN", "AQAAAAEAACcQAAAAEOkGOwHuZxQbORSyR+IHgeHpx1LOjn8uODXtQQM/yfDJ8doJ/aenZ919JtYx9dI7sw==", null, false, "ab025fae-3a42-41fd-be03-f72d78c93839", false, "admin" });
+                values: new object[] { "49ff8909-19dd-4a0f-9959-6dd590556e8b", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "cf290bcf-43b7-4549-9dba-d8a6b7c92d8e", "admin@test.com", false, "Default", "Admin", false, null, "ADMIN@TEST.COM", "ADMIN", "AQAAAAEAACcQAAAAEAF0hJMRZX7SPukuRLWJKb6903ZpzAL/6RJ9/3kKjTpJS8bp1Bku89c0PkEeUHMs7A==", null, false, "462debe8-ba45-4f29-9669-b07610e78421", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "b1ed9659-aa09-4c63-b734-b8c355180301", "4603e2db-59f4-449a-9014-61c1bd403939" });
+                values: new object[] { "e0a1738f-b770-49c5-9818-935f62cba7a8", "49ff8909-19dd-4a0f-9959-6dd590556e8b" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -215,6 +236,11 @@ namespace AttendanceManagement.Api.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Attendances_UserId",
+                table: "Attendances",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -233,6 +259,9 @@ namespace AttendanceManagement.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Attendances");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

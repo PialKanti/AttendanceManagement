@@ -1,7 +1,9 @@
 ﻿using AttendanceManagement.Api.Dtos;
+using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AttendanceManagement.Api.Controllers
@@ -12,17 +14,25 @@ namespace AttendanceManagement.Api.Controllers
     public class AttendancesController : ControllerBase
     {
         private readonly IAttendanceRepository _repository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AttendancesController(IAttendanceRepository repository)
+        public AttendancesController(IAttendanceRepository repository, UserManager<ApplicationUser> userManager)
         {
             _repository = repository;
+            _userManager = userManager;
         }
 
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AttendanceCreateDto dtoModel)
         {
-            _repository.Create(dtoModel);
+            var user = await _userManager.FindByNameAsync(dtoModel.Username);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            await _repository.Create(dtoModel, user);
 
             return Ok();
         }

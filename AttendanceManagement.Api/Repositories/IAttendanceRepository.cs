@@ -1,9 +1,10 @@
 ﻿using AttendanceManagement.Api.Dtos;
+using AttendanceManagement.Api.Entities;
 
 namespace AttendanceManagement.Api.Repositories
 {
     public interface IAttendanceRepository
     {
-        void Create(AttendanceCreateDto dtoModel);
+        Task Create(AttendanceCreateDto dtoModel, ApplicationUser user);
     }
 }

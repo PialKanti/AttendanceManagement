@@ -100,10 +100,10 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "59674b8c-80c5-452d-84dd-9e8f53a339dc",
+                            Id = "49ff8909-19dd-4a0f-9959-6dd590556e8b",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "a45bb31c-aa5b-4597-bd8a-03c1441240f9",
+                            ConcurrencyStamp = "cf290bcf-43b7-4549-9dba-d8a6b7c92d8e",
                             Email = "admin@test.com",
                             EmailConfirmed = false,
                             FirstName = "Default",
@@ -111,9 +111,9 @@ namespace AttendanceManagement.Api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@TEST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFM1DTQ4IhHYqd9E5iy/4aoYYYMhi74bFSsql5oL41zRV5ivb6HiaF+P847tZQ0BTA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAF0hJMRZX7SPukuRLWJKb6903ZpzAL/6RJ9/3kKjTpJS8bp1Bku89c0PkEeUHMs7A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "95a3c11d-2ac7-4fb4-8b29-2e8a912bb679",
+                            SecurityStamp = "462debe8-ba45-4f29-9669-b07610e78421",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -175,22 +175,22 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f8e27e73-f812-4fb1-9422-9d24674e46c9",
-                            ConcurrencyStamp = "c730a198-a8a0-46b5-ad0d-393a796b2e31",
+                            Id = "e0a1738f-b770-49c5-9818-935f62cba7a8",
+                            ConcurrencyStamp = "5b776d39-aad9-404b-8ce3-786631999226",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "60f0dbc7-ca24-4e78-a121-2c66b0dfd09f",
-                            ConcurrencyStamp = "7508fbd4-0875-4a83-92a1-d7a09d98d562",
+                            Id = "853346e1-d4f4-472c-95f7-327e26814e73",
+                            ConcurrencyStamp = "3cc38019-9d79-4468-a8bb-7abbb7b761f1",
                             Name = "Hr",
                             NormalizedName = "HR"
                         },
                         new
                         {
-                            Id = "e0c8a9da-ddc1-45e5-8f1f-552cddfd7193",
-                            ConcurrencyStamp = "c9b246ed-83d6-421d-aa23-6339e20bc7bb",
+                            Id = "dd021bef-c544-40bd-8d4a-389ce42aaa18",
+                            ConcurrencyStamp = "488fb64b-83a9-4bc5-94a0-7642bf5f6dea",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -285,8 +285,8 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "59674b8c-80c5-452d-84dd-9e8f53a339dc",
-                            RoleId = "f8e27e73-f812-4fb1-9422-9d24674e46c9"
+                            UserId = "49ff8909-19dd-4a0f-9959-6dd590556e8b",
+                            RoleId = "e0a1738f-b770-49c5-9818-935f62cba7a8"
                         });
                 });
 
