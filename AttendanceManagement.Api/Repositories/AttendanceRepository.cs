@@ -17,7 +17,7 @@ namespace AttendanceManagement.Api.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Attendance> CreateAsync(AttendanceCreateDto dtoModel, ApplicationUser user)
+        public async Task<AttendanceDto> CreateAsync(AttendanceCreateDto dtoModel, ApplicationUser user)
         {
             var attendance = new Attendance()
             {
@@ -31,12 +31,29 @@ namespace AttendanceManagement.Api.Repositories
             await _dbContext.Attendances.AddAsync(attendance);
             await _dbContext.SaveChangesAsync();
 
-            return attendance;
+            return new AttendanceDto
+            {
+                Id = attendance.Id,
+                Username = user.UserName,
+                EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
+            };
         }
 
-        public async Task<Attendance?> GetAsync(string id)
+        public async Task<AttendanceDto?> GetAsync(string id)
         {
-            return await _dbContext.Attendances.Include(attendance => attendance.User).FirstOrDefaultAsync(attendance => attendance.Id == id);
+            var attendance = await _dbContext.Attendances.Include(attendance => attendance.User).FirstOrDefaultAsync(attendance => attendance.Id == id);
+
+            if (attendance == null)
+            {
+                return null;
+            }
+
+            return new AttendanceDto
+            {
+                Id = attendance.Id,
+                Username = attendance.User.UserName,
+                EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
+            };
         }
     }
 }

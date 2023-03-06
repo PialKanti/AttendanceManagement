@@ -33,34 +33,20 @@ namespace AttendanceManagement.Api.Controllers
                 return BadRequest("User not found");
             }
 
-            var attendance = await _repository.CreateAsync(dtoModel, user);
+            var attendanceDto = await _repository.CreateAsync(dtoModel, user);
 
-            var attendanceDto = new AttendanceDto
-            {
-                Id = attendance.Id,
-                Username = user.UserName,
-                EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
-            };
-
-            return CreatedAtAction(nameof(Get), new {id = attendance.Id}, attendanceDto);
+            return CreatedAtAction(nameof(Get), new {id = attendanceDto.Id}, attendanceDto);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Attendance>> Get(string id)
         {
-            var attendance = await _repository.GetAsync(id);
+            var attendanceDto = await _repository.GetAsync(id);
 
-            if (attendance == null)
+            if (attendanceDto == null)
             {
                 return NotFound("Attendance entry does not exist");
             }
-
-            var attendanceDto = new AttendanceDto
-            {
-                Id = attendance.Id,
-                Username = attendance.User?.UserName,
-                EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
-            };
 
             return Ok(attendanceDto);
         }
