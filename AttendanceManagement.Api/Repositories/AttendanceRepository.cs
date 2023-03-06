@@ -37,21 +37,10 @@ namespace AttendanceManagement.Api.Repositories
             };
         }
 
-        public async Task<AttendanceDto?> GetAsync(string id)
+        public async Task<Attendance?> GetAsync(string id)
         {
-            var attendance = await _dbContext.Attendances.Include(attendance => attendance.User).FirstOrDefaultAsync(attendance => attendance.Id == id);
-
-            if (attendance == null)
-            {
-                return null;
-            }
-
-            return new AttendanceDto
-            {
-                Id = attendance.Id,
-                Username = attendance.User.UserName,
-                EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
-            };
+            return await _dbContext.Attendances.Include(attendance => attendance.User)
+                .FirstOrDefaultAsync(attendance => attendance.Id == id);
         }
 
         public async Task<IEnumerable<AttendanceDto>> GetByUsernameAndMonthAsync(string username, int month)
@@ -66,6 +55,12 @@ namespace AttendanceManagement.Api.Repositories
                             EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
                         })
                 .ToListAsync();
+        }
+
+        public async Task UpdateAsync(string id, Attendance attendance)
+        {
+            _dbContext.Entry(attendance).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
