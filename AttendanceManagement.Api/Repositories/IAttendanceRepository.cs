@@ -7,5 +7,6 @@ namespace AttendanceManagement.Api.Repositories
     {
         Task<AttendanceDto> CreateAsync(AttendanceCreateDto dtoModel, ApplicationUser user);
         Task<AttendanceDto?> GetAsync(string id);
+        Task<IEnumerable<AttendanceDto>> GetByUsernameAndMonthAsync(string username, int month);
     }
 }

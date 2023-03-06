@@ -14,30 +14,33 @@ namespace AttendanceManagement.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IUsersRepository<ApplicationUser> _repository;
+        private readonly IUsersRepository<ApplicationUser> _userRepository;
+        private readonly IAttendanceRepository _attendanceRepository;
         private readonly JwtTokenService _tokenService;
 
-        public UsersController(ApplicationDbContext dbContext, IUsersRepository<ApplicationUser> repository, JwtTokenService tokenService)
+        public UsersController(ApplicationDbContext dbContext, IUsersRepository<ApplicationUser> userRepository,
+            IAttendanceRepository attendanceRepository, JwtTokenService tokenService)
         {
             _dbContext = dbContext;
-            _repository = repository;
+            _userRepository = userRepository;
+            _attendanceRepository = attendanceRepository;
             _tokenService = tokenService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] RegisterUserDto userDto)
         {
-            if (_repository.GetByUserName(userDto.UserName).Result != null)
+            if (_userRepository.GetByUserName(userDto.UserName).Result != null)
             {
                 return BadRequest(new { error = "User username already exists" });
             }
 
-            if (_repository.GetByEmail(userDto.Email).Result != null)
+            if (_userRepository.GetByEmail(userDto.Email).Result != null)
             {
                 return BadRequest(new { error = "User email already exists" });
             }
 
-            var result = await _repository.Create(userDto);
+            var result = await _userRepository.Create(userDto);
 
             if (!result.Succeeded)
             {
@@ -51,13 +54,13 @@ namespace AttendanceManagement.Api.Controllers
         [Route("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] LoginUserDto userDto)
         {
-            var user = await _repository.GetByUserName(userDto.Username);
+            var user = await _userRepository.GetByUserName(userDto.Username);
             if (user == null)
             {
                 return BadRequest("User not found");
             }
 
-            var isPasswordValid = await _repository.VerifyPassword(user, userDto.Password);
+            var isPasswordValid = await _userRepository.VerifyPassword(user, userDto.Password);
             if (!isPasswordValid)
             {
                 return BadRequest("Username/Password wrong");
@@ -73,6 +76,16 @@ namespace AttendanceManagement.Api.Controllers
                 Email = user.Email,
                 Token = accessToken
             });
+        }
+
+        [HttpGet("{username}/attendances")]
+
+        public async Task<ActionResult<IEnumerable<AttendanceDto>>> Attendances(string username,[FromQuery]int? month)
+        {
+            month ??= DateTime.UtcNow.Month;
+            var attendances = await _attendanceRepository.GetByUsernameAndMonthAsync(username, (int)month);
+
+            return Ok(attendances);
         }
     }
 }

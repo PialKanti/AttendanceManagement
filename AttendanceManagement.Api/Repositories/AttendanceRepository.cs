@@ -2,8 +2,6 @@
 using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Utils;
-using AutoMapper.Internal;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceManagement.Api.Repositories
@@ -54,6 +52,20 @@ namespace AttendanceManagement.Api.Repositories
                 Username = attendance.User.UserName,
                 EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
             };
+        }
+
+        public async Task<IEnumerable<AttendanceDto>> GetByUsernameAndMonthAsync(string username, int month)
+        {
+            return await _dbContext.Attendances.Include(attendance => attendance.User)
+                .Where(attendance => attendance.User.UserName == username && attendance.Month == month).Select(
+                    attendance =>
+                        new AttendanceDto
+                        {
+                            Id = attendance.Id,
+                            Username = attendance.User.UserName,
+                            EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
+                        })
+                .ToListAsync();
         }
     }
 }
