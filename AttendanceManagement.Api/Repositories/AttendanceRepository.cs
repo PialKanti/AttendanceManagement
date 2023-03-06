@@ -4,6 +4,7 @@ using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Utils;
 using AutoMapper.Internal;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceManagement.Api.Repositories
 {
@@ -16,7 +17,7 @@ namespace AttendanceManagement.Api.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task Create(AttendanceCreateDto dtoModel, ApplicationUser user)
+        public async Task<Attendance> CreateAsync(AttendanceCreateDto dtoModel, ApplicationUser user)
         {
             var attendance = new Attendance()
             {
@@ -29,6 +30,13 @@ namespace AttendanceManagement.Api.Repositories
 
             await _dbContext.Attendances.AddAsync(attendance);
             await _dbContext.SaveChangesAsync();
+
+            return attendance;
+        }
+
+        public async Task<Attendance?> GetAsync(string id)
+        {
+            return await _dbContext.Attendances.Include(attendance => attendance.User).FirstOrDefaultAsync(attendance => attendance.Id == id);
         }
     }
 }

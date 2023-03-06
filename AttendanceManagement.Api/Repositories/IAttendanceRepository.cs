@@ -5,6 +5,7 @@ namespace AttendanceManagement.Api.Repositories
 {
     public interface IAttendanceRepository
     {
-        Task Create(AttendanceCreateDto dtoModel, ApplicationUser user);
+        Task<Attendance> CreateAsync(AttendanceCreateDto dtoModel, ApplicationUser user);
+        Task<Attendance?> GetAsync(string id);
     }
 }

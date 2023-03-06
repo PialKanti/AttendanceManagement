@@ -1,6 +1,7 @@
 ﻿using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Repositories;
+using AttendanceManagement.Api.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -32,9 +33,36 @@ namespace AttendanceManagement.Api.Controllers
                 return BadRequest("User not found");
             }
 
-            await _repository.Create(dtoModel, user);
+            var attendance = await _repository.CreateAsync(dtoModel, user);
 
-            return Ok();
+            var attendanceDto = new AttendanceDto
+            {
+                Id = attendance.Id,
+                Username = user.UserName,
+                EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
+            };
+
+            return CreatedAtAction(nameof(Get), new {id = attendance.Id}, attendanceDto);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Attendance>> Get(string id)
+        {
+            var attendance = await _repository.GetAsync(id);
+
+            if (attendance == null)
+            {
+                return NotFound("Attendance entry does not exist");
+            }
+
+            var attendanceDto = new AttendanceDto
+            {
+                Id = attendance.Id,
+                Username = attendance.User?.UserName,
+                EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
+            };
+
+            return Ok(attendanceDto);
         }
     }
 }
