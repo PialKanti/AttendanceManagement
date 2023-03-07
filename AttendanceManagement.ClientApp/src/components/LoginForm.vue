@@ -2,14 +2,15 @@
     <div class="row">
         <div class="col"></div>
         <div class="col">
-            <form>
+            <form @submit.prevent="onSubmit">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" aria-describedby="usernameHelp">
+                    <input type="text" v-model="username" class="form-control" id="username"
+                        aria-describedby="usernameHelp">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password">
+                    <input type="password" v-model="password" class="form-control" id="password">
                 </div>
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="rememberCheckbox">
@@ -24,7 +25,31 @@
 
 <script>
 export default {
-    name: 'LoginForm'
+    name: 'LoginForm',
+    data() {
+        return {
+            username: '',
+            password: ''
+        }
+    },
+    methods: {
+        async onSubmit() {
+            const data = JSON.stringify({
+                userName: this.username,
+                password: this.password
+            });
+
+            const response = await fetch(process.env.VUE_APP_DEV_API_ENDPOINT + 'users/authenticate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: data
+            });
+
+            console.log(response);
+        }
+    }
 }
 </script>
 
