@@ -12,15 +12,13 @@ namespace AttendanceManagement.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
         private readonly IUsersRepository<ApplicationUser> _userRepository;
         private readonly IAttendanceRepository _attendanceRepository;
         private readonly JwtTokenService _tokenService;
 
-        public UsersController(ApplicationDbContext dbContext, IUsersRepository<ApplicationUser> userRepository,
+        public UsersController(IUsersRepository<ApplicationUser> userRepository,
             IAttendanceRepository attendanceRepository, JwtTokenService tokenService)
         {
-            _dbContext = dbContext;
             _userRepository = userRepository;
             _attendanceRepository = attendanceRepository;
             _tokenService = tokenService;
