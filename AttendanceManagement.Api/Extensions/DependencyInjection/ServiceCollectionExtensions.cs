@@ -44,6 +44,10 @@ namespace AttendanceManagement.Api.Extensions.DependencyInjection
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
+                .AddCookie(options =>
+                {
+                    options.Cookie.Name = "X-Access-Token";
+                })
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = true;
@@ -62,6 +66,18 @@ namespace AttendanceManagement.Api.Extensions.DependencyInjection
                                 Encoding.UTF8.GetBytes(
                                     configuration[
                                         "JwtToken:Key"])) //Todo keep IssuerSigningKey in .env file or user secrets
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+                            {
+                                context.Token = context.Request.Cookies["X-Access-Token"];
+                            }
+
+                            return Task.CompletedTask;
+                        }
                     };
                 });
 
@@ -148,6 +164,22 @@ namespace AttendanceManagement.Api.Extensions.DependencyInjection
                     }
                 });
             });
+            return services;
+        }
+
+        public static IServiceCollection AddCorsPolicy(this IServiceCollection services, string policyName)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(policyName, configurePolicy =>
+                {
+                    configurePolicy.WithOrigins("http://localhost:8080", "https://localhost:8080")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
             return services;
         }
     }

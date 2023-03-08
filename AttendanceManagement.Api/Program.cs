@@ -7,16 +7,17 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.WithOrigins("http://localhost:8080").AllowAnyHeader().AllowAnyMethod();
-    });
-});
+const string corsPolicyName = "CorsPolicy";
+builder.Services.AddCorsPolicy(corsPolicyName);
 
 builder.Services.AddControllers();
 builder.Services.AddApiVersioningServices();
+
+builder.Services.AddCookiePolicy(options =>
+{
+    options.CheckConsentNeeded = context => false;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -49,7 +50,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors(corsPolicyName);
 
 app.UseAuthentication();
 
