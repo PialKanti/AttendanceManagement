@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name: 'LoginForm',
     data() {
@@ -34,20 +36,12 @@ export default {
     },
     methods: {
         async onSubmit() {
-            const data = JSON.stringify({
+            const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'users/authenticate', {
                 userName: this.username,
                 password: this.password
-            });
+            }, { withCredentials: true });
 
-            const response = await fetch(process.env.VUE_APP_DEV_API_ENDPOINT + 'users/authenticate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: data
-            });
-
-            console.log(response);
+            console.log(response.data);
         }
     }
 }

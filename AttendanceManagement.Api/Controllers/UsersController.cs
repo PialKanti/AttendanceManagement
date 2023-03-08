@@ -68,7 +68,15 @@ namespace AttendanceManagement.Api.Controllers
 
             var accessToken = _tokenService.CreateToken(user);
 
-            await _dbContext.SaveChangesAsync();
+            HttpContext.Response.Cookies.Append("X-Access-Token", accessToken, new CookieOptions
+            {
+                Expires = DateTime.Now.AddMinutes(30),
+                HttpOnly = true,
+                IsEssential = true,
+                Path = "/",
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
 
             return Ok(new AuthenticationResponse
             {
