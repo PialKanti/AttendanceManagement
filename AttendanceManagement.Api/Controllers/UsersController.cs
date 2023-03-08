@@ -2,7 +2,6 @@
 using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Repositories;
-using AttendanceManagement.Api.Responses;
 using AttendanceManagement.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -78,11 +77,9 @@ namespace AttendanceManagement.Api.Controllers
                 Secure = true
             });
 
-            return Ok(new AuthenticationResponse
+            return Ok(new
             {
-                Username = user.UserName,
-                Email = user.Email,
-                Token = accessToken
+                message = "Login successful"
             });
         }
 
