@@ -24,9 +24,15 @@
 </template>
 
 <script>
+import { useAuthStore } from '@/stores/AuthStore';
 import axios from 'axios'
 
 export default {
+    setup() {
+        const authStore = useAuthStore()
+
+        return { authStore }
+    },
     name: 'LoginForm',
     data() {
         return {
@@ -42,6 +48,9 @@ export default {
             }, { withCredentials: true });
 
             console.log(response.data);
+            if (response.status === 200) {
+                this.authStore.login();
+            }
         }
     }
 }

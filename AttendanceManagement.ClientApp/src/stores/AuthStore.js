@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
 
 export const useAuthStore = defineStore('authStore', {
-    state: () => {
+    state: () => ({
         user: {
-            isLoggedIn: false;
-            username: '';
+            isLoggedIn: false,
+            username: '',
         }
-    },
+    }),
     actions: {
         login(username) {
             this.user.isLoggedIn = true;
