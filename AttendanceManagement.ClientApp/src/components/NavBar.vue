@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Navbar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -12,7 +12,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-else>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0" v-else>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Login</a>
                     </li>
@@ -20,10 +20,6 @@
                         <a class="nav-link active" aria-current="page" href="#">Register</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>
@@ -41,3 +37,9 @@ export default {
     name: 'NavBar'
 }
 </script>
+
+<style>
+nav.navbar {
+    background: #A6B0B7;
+}
+</style>
