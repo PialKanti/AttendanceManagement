@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Options;
+using AttendanceManagement.Api.Utils;
 
 namespace AttendanceManagement.Api.Services
 {
@@ -48,12 +49,12 @@ namespace AttendanceManagement.Api.Services
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)),
                     new Claim(ClaimTypes.NameIdentifier, user.Id),
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Email, user.Email)
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64)
                 };
                 return claims;
             }
