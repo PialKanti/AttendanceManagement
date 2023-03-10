@@ -15,6 +15,11 @@ export default {
         return { alertStore }
     },
     name: 'AlertMessage',
+    mounted() {
+        setTimeout(() => {
+            this.alertStore.hide();
+        }, 6000)
+    },
     methods: {
         OnCloseButtonClicked() {
             this.alertStore.hide();
