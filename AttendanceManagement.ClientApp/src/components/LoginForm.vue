@@ -25,13 +25,15 @@
 
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
+import { useAlertStore } from '@/stores/AlertStore';
 import axios from 'axios'
 
 export default {
     setup() {
-        const authStore = useAuthStore()
+        const authStore = useAuthStore();
+        const alertStore = useAlertStore();
 
-        return { authStore }
+        return { authStore, alertStore }
     },
     name: 'LoginForm',
     data() {
@@ -47,13 +49,11 @@ export default {
                 password: this.password
             }, { withCredentials: true });
 
-            console.log(response.data);
             if (response.status === 200) {
                 this.authStore.login();
+                this.alertStore.show('Login successful', 'success');
             }
         }
     }
 }
 </script>
-
-<style scoped></style>
