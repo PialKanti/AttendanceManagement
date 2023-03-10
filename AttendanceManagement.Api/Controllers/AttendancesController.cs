@@ -37,6 +37,7 @@ namespace AttendanceManagement.Api.Controllers
             return CreatedAtAction(nameof(Get), new {id = attendanceDto.Id}, attendanceDto);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AttendanceDto>> Get(string id)
         {
@@ -58,6 +59,7 @@ namespace AttendanceManagement.Api.Controllers
             return Ok(attendanceDto);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] AttendanceUpdateDto dtoModel)
         {
