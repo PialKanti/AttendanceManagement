@@ -44,16 +44,23 @@ export default {
     },
     methods: {
         async onSubmit() {
-            const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'users/authenticate', {
+            const data = {
                 userName: this.username,
                 password: this.password
-            }, { withCredentials: true });
+            };
+
+            this.clearForm();
+            const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'users/authenticate', data, { withCredentials: true });
 
             if (response.status === 200) {
                 this.authStore.login();
                 this.alertStore.show('Login successful', 'success');
                 this.$router.push('/dashboard');
             }
+        },
+        clearForm() {
+            this.username = '';
+            this.password = '';
         }
     }
 }

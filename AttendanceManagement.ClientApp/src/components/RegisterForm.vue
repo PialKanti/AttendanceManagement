@@ -59,19 +59,31 @@ export default {
     },
     methods: {
         async onSubmit() {
-            const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'users', {
+            const data = {
                 firstName: this.firstname,
                 lastName: this.lastname,
                 userName: this.username,
                 password: this.password,
                 email: this.email,
                 birthDate: this.birthday
-            }, { withCredentials: true });
+            };
+
+            this.clearForm();
+            const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'users', data, { withCredentials: true });
 
             if (response.status === 200) {
                 this.alertStore.show('Registration successful. Please login to continue.', 'success');
                 this.$router.push('/login');
             }
+        },
+        clearForm() {
+            this.firstname = '';
+            this.lastname = '';
+            this.username = '';
+            this.email = '';
+            this.birthday = '';
+            this.password = '';
+            this.confirmPassword = '';
         }
     }
 }
