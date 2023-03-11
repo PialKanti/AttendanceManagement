@@ -1,8 +1,9 @@
 <template>
     <div class="content">
         <div class="text-center attendance-given" v-if="isAttendanceFound">
-            <p><strong>Today's Entry time</strong> = {{
-                getFormattedDateTime(new Date(attendance.entryDateTime)) }}</p>
+            <p class="today-date">{{ getFormattedDate(new Date(attendance.entryDateTime)) }}</p>
+            <p><span class="in-time font-13pt">In time: </span>{{ getFormattedTime(new Date(attendance.entryDateTime)) }}
+            </p>
             <p class="text-muted">You have been inside for {{ getStayDurationTime(new Date(attendance.entryDateTime), new
                 Date()) }}</p>
             <div class="text-center report-button">
@@ -20,7 +21,8 @@
 </template>
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
-import axios, { HttpStatusCode } from 'axios'
+import axios, { HttpStatusCode } from 'axios';
+import moment from 'moment';
 
 export default {
     setup() {
@@ -57,8 +59,11 @@ export default {
 
             return response.data;
         },
-        getFormattedDateTime(date) {
-            return date.toLocaleString("en-US");
+        getFormattedDate(date) {
+            return moment(date).format('dddd, Do MMMM, YYYY');
+        },
+        getFormattedTime(date) {
+            return moment(date).format('LT');
         },
         getStayDurationTime(entryDate, currentDate) {
             let diffInSeconds = (currentDate.getTime() - entryDate.getTime()) / 1000;
@@ -109,5 +114,20 @@ export default {
 
  .report-button {
      margin-top: 20px;
+ }
+
+ .today-date {
+     font-weight: 700;
+     font-style: oblique;
+     font-size: 15pt;
+ }
+
+ .in-time {
+     color: green;
+     font-weight: 700;
+ }
+
+ .font-13pt {
+     font-size: 13pt;
  }
 </style>
