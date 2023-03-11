@@ -18,7 +18,7 @@
 </template>
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
-import axios from 'axios'
+import axios, { HttpStatusCode } from 'axios'
 
 export default {
     setup() {
@@ -44,7 +44,7 @@ export default {
             const uri = process.env.VUE_APP_DEV_API_ENDPOINT + 'attendances';
             const response = await axios.post(uri, data, { withCredentials: true });
 
-            if (response.status === 200) {
+            if (response.status === HttpStatusCode.Created) {
                 this.attendance = response.data;
                 this.isAttendanceFound = true;
             }
