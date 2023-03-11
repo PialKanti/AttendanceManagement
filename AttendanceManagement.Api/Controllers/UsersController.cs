@@ -1,8 +1,7 @@
-﻿using AttendanceManagement.Api.Domain;
-using AttendanceManagement.Api.Dtos;
+﻿using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Repositories;
-using AttendanceManagement.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AttendanceManagement.Api.Controllers
@@ -14,14 +13,11 @@ namespace AttendanceManagement.Api.Controllers
     {
         private readonly IUsersRepository<ApplicationUser> _userRepository;
         private readonly IAttendanceRepository _attendanceRepository;
-        private readonly JwtTokenService _tokenService;
 
-        public UsersController(IUsersRepository<ApplicationUser> userRepository,
-            IAttendanceRepository attendanceRepository, JwtTokenService tokenService)
+        public UsersController(IUsersRepository<ApplicationUser> userRepository, IAttendanceRepository attendanceRepository)
         {
             _userRepository = userRepository;
             _attendanceRepository = attendanceRepository;
-            _tokenService = tokenService;
         }
 
         [HttpPost]
@@ -47,42 +43,8 @@ namespace AttendanceManagement.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] LoginUserDto userDto)
-        {
-            var user = await _userRepository.GetByUserName(userDto.Username);
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
-
-            var isPasswordValid = await _userRepository.VerifyPassword(user, userDto.Password);
-            if (!isPasswordValid)
-            {
-                return BadRequest("Username/Password wrong");
-            }
-
-            var accessToken = _tokenService.CreateToken(user);
-
-            HttpContext.Response.Cookies.Append("X-Access-Token", accessToken, new CookieOptions
-            {
-                Expires = DateTime.Now.AddMinutes(30),
-                HttpOnly = true,
-                IsEssential = true,
-                Path = "/",
-                SameSite = SameSiteMode.None,
-                Secure = true
-            });
-
-            return Ok(new
-            {
-                message = "Login successful"
-            });
-        }
-
+        [Authorize]
         [HttpGet("{username}/attendances")]
-
         public async Task<ActionResult<IEnumerable<AttendanceDto>>> Attendances(string username,[FromQuery]int? month)
         {
             month ??= DateTime.UtcNow.Month;

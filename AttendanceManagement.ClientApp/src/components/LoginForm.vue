@@ -50,7 +50,7 @@ export default {
             };
 
             this.clearForm();
-            const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'users/authenticate', data, { withCredentials: true });
+            const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'auth/login', data, { withCredentials: true });
 
             if (response.status === 200) {
                 this.authStore.login();

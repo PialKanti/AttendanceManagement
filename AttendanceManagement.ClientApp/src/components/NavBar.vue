@@ -15,8 +15,8 @@
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <router-link to="/logout" active-class="active" class="nav-link"
-                            aria-current="page">Logout</router-link>
+                        <a href="/logout" active-class="active" class="nav-link" aria-current="page"
+                            @click="onLogout">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -38,6 +38,7 @@
 
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
+import axios from 'axios';
 
 export default {
     setup() {
@@ -45,7 +46,16 @@ export default {
 
         return { authStore }
     },
-    name: 'NavBar'
+    name: 'NavBar',
+    methods: {
+        async onLogout() {
+            const response = await axios.get(process.env.VUE_APP_DEV_API_ENDPOINT + 'auth/logout', { withCredentials: true });
+
+            if (response.status === 200) {
+                this.authStore.logout();
+            }
+        }
+    }
 }
 </script>
 
