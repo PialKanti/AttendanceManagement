@@ -26,7 +26,7 @@
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
 import { useAlertStore } from '@/stores/AlertStore';
-import axios from 'axios'
+import axios, { HttpStatusCode } from 'axios'
 
 export default {
     setup() {
@@ -52,7 +52,7 @@ export default {
             this.clearForm();
             const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'auth/login', data, { withCredentials: true });
 
-            if (response.status === 200) {
+            if (response.status === HttpStatusCode.Ok) {
                 this.authStore.login(data.userName);
                 this.alertStore.show('Login successful', 'success');
                 this.$router.push('/dashboard');

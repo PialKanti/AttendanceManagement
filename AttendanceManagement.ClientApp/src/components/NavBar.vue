@@ -38,7 +38,7 @@
 
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 
 export default {
     setup() {
@@ -51,7 +51,7 @@ export default {
         async onLogout() {
             const response = await axios.get(process.env.VUE_APP_DEV_API_ENDPOINT + 'auth/logout', { withCredentials: true });
 
-            if (response.status === 200) {
+            if (response.status === HttpStatusCode.Ok) {
                 this.authStore.logout();
             }
         }
