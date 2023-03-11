@@ -1,8 +1,10 @@
 <template>
     <div class="content">
-        <div class="attendance-given" v-if="isAttendanceFound">
-            <p class="text-center"><strong>Today's Entry time</strong> = {{
+        <div class="text-center attendance-given" v-if="isAttendanceFound">
+            <p><strong>Today's Entry time</strong> = {{
                 getFormattedDateTime(new Date(attendance.entryDateTime)) }}</p>
+            <p class="text-muted">You have been inside for {{ getStayDurationTime(new Date(attendance.entryDateTime), new
+                Date()) }}</p>
             <div class="text-center report-button">
                 <button type="button" class="btn btn-danger" @click="reportExit">Report exit time</button>
             </div>
@@ -57,6 +59,26 @@ export default {
         },
         getFormattedDateTime(date) {
             return date.toLocaleString("en-US");
+        },
+        getStayDurationTime(entryDate, currentDate) {
+            let diffInSeconds = (currentDate.getTime() - entryDate.getTime()) / 1000;
+            const hour = Math.floor(diffInSeconds / 3600);
+            diffInSeconds %= 3600;
+            const minute = Math.floor(diffInSeconds / 60);
+            const second = Math.floor(diffInSeconds % 60);
+
+            let duration = '';
+            if (hour > 0) {
+                duration += hour + ((hour == 1) ? ' hour ' : ' hours ');
+            }
+            if (minute > 0) {
+                duration += minute + ((minute == 1) ? ' minute ' : ' minutes ');
+            }
+            if (second > 0) {
+                duration += second + ((second == 1) ? ' second. ' : ' seconds. ');
+            }
+
+            return duration;
         }
     },
     async created() {
