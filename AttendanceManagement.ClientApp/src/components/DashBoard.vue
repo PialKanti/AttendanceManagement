@@ -4,8 +4,7 @@
             <p class="today-date">{{ getFormattedDate(new Date(attendance.entryDateTime)) }}</p>
             <p><span class="in-time font-13pt">In time: </span>{{ getFormattedTime(new Date(attendance.entryDateTime)) }}
             </p>
-            <p class="text-muted">You have been inside for {{ getStayDurationTime(new Date(attendance.entryDateTime), new
-                Date()) }}</p>
+            <p class="text-muted">You have been inside for {{ stayDuration }}</p>
             <div class="text-center report-button">
                 <button type="button" class="btn btn-danger" @click="reportExit">Report exit time</button>
             </div>
@@ -34,7 +33,8 @@ export default {
     data() {
         return {
             isAttendanceFound: false,
-            attendance: {}
+            attendance: {},
+            stayDuration: ''
         }
     },
     methods: {
@@ -84,6 +84,10 @@ export default {
             }
 
             return duration;
+        },
+        updateStayTime() {
+            this.stayDuration = this.getStayDurationTime(new Date(this.attendance.entryDateTime), new Date());
+            setTimeout(this.updateStayTime, 1000);
         }
     },
     async created() {
@@ -96,8 +100,8 @@ export default {
 
             if (lastEntryDate.getUTCDate() === todayDate.getUTCDate() && lastEntryDate.getUTCMonth() === todayDate.getUTCMonth() && lastEntryDate.getUTCFullYear() === todayDate.getUTCFullYear()) {
                 this.attendance = lastEntry;
-                console.log(this.attendance);
                 this.isAttendanceFound = true;
+                this.updateStayTime();
             }
         }
     }
