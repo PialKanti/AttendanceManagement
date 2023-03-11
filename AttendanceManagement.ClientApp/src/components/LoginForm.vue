@@ -53,7 +53,7 @@ export default {
             const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'auth/login', data, { withCredentials: true });
 
             if (response.status === 200) {
-                this.authStore.login();
+                this.authStore.login(data.userName);
                 this.alertStore.show('Login successful', 'success');
                 this.$router.push('/dashboard');
             }
