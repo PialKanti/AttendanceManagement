@@ -23,7 +23,8 @@ namespace AttendanceManagement.Api.Repositories
                 User = user,
                 EntryTimestamp = CommonUtils.GetUtcTimestamp(dtoModel.EntryDateTime),
                 EntryDate = dtoModel.EntryDateTime.Date,
-                Month = dtoModel.EntryDateTime.Month
+                Month = dtoModel.EntryDateTime.Month,
+                Year = dtoModel.EntryDateTime.Year
             };
 
             await _dbContext.Attendances.AddAsync(attendance);

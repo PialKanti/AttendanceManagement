@@ -10,5 +10,6 @@ namespace AttendanceManagement.Api.Entities
         public long ExitTimestamp { get; set; }
         public DateTime EntryDate { get; set; }
         public int Month { get; set; }
+        public int Year { get; set; }
     }
 }
