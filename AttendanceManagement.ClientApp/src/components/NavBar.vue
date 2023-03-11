@@ -14,10 +14,10 @@
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0" v-else>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Login</a>
+                        <router-link to="/login" class="nav-link" aria-current="page">Login</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Register</a>
+                        <router-link to="/register" class="nav-link" aria-current="page">Register</router-link>
                     </li>
                 </ul>
             </div>

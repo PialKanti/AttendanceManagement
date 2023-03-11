@@ -2,8 +2,6 @@
   <NavBar />
   <div class="container">
     <AlertMessage v-if="alertStore.isShown" />
-    <!-- <DashBoard v-if="authStore.user.isLoggedIn" />
-    <LoginForm v-else /> -->
     <router-view></router-view>
   </div>
 </template>
@@ -11,8 +9,6 @@
 <script>
 import NavBar from './components/NavBar.vue';
 import AlertMessage from './components/AlertMessage.vue';
-// import DashBoard from './components/DashBoard.vue';
-// import LoginForm from './components/LoginForm.vue'
 import { useAuthStore } from './stores/AuthStore';
 import { useAlertStore } from '@/stores/AlertStore';
 
@@ -34,5 +30,6 @@ export default {
 <style>
 .container {
   margin-top: 60px;
+  margin-bottom: 50px;
 }
 </style>

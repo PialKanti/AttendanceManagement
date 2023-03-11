@@ -13,8 +13,7 @@ const router = VueRouter.createRouter({
 
 router.beforeEach((to) => {
     const authStore = useAuthStore();
-    console.log(authStore.user.isLoggedIn);
-    if (!authStore.user.isLoggedIn && to.name !== 'Login') {
+    if (!authStore.user.isLoggedIn && to.name !== 'Login' && to.name !== 'Register') {
         return { name: 'Login' };
     }
     return true;
