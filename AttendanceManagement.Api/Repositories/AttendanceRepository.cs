@@ -44,11 +44,12 @@ namespace AttendanceManagement.Api.Repositories
                 .FirstOrDefaultAsync(attendance => attendance.Id == id);
         }
 
-        public async Task<IEnumerable<AttendanceDto>> GetByUsernameAndMonthAsync(string username, int month)
+        public async Task<IEnumerable<AttendanceDto>> GetUserAttendancesByMonthAndYearAsync(string username, int month, int year)
         {
             return await _dbContext.Attendances.Include(attendance => attendance.User)
-                .Where(attendance => attendance.User.UserName == username && attendance.Month == month).Select(
-                    attendance =>
+                .Where(attendance => attendance.User.UserName == username && attendance.Month == month && attendance.Year == year)
+                .OrderByDescending(attendance => attendance.EntryDate)
+                .Select(attendance =>
                         new AttendanceDto
                         {
                             Id = attendance.Id,

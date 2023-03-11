@@ -8,6 +8,6 @@ namespace AttendanceManagement.Api.Repositories
         Task<AttendanceDto> CreateAsync(AttendanceCreateDto dtoModel, ApplicationUser user);
         Task UpdateAsync(string id, Attendance attendance);
         Task<Attendance?> GetAsync(string id);
-        Task<IEnumerable<AttendanceDto>> GetByUsernameAndMonthAsync(string username, int month);
+        Task<IEnumerable<AttendanceDto>> GetUserAttendancesByMonthAndYearAsync(string username, int month, int year);
     }
 }

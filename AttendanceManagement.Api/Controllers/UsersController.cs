@@ -45,10 +45,11 @@ namespace AttendanceManagement.Api.Controllers
 
         [Authorize]
         [HttpGet("{username}/attendances")]
-        public async Task<ActionResult<IEnumerable<AttendanceDto>>> Attendances(string username,[FromQuery]int? month)
+        public async Task<ActionResult<IEnumerable<AttendanceDto>>> Attendances(string username, [FromQuery] int? month, [FromQuery] int? year)
         {
             month ??= DateTime.UtcNow.Month;
-            var attendances = await _attendanceRepository.GetByUsernameAndMonthAsync(username, (int)month);
+            year ??= DateTime.UtcNow.Year;
+            var attendances = await _attendanceRepository.GetUserAttendancesByMonthAndYearAsync(username, (int)month, (int)year);
 
             return Ok(attendances);
         }
