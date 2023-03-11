@@ -52,6 +52,7 @@ export default {
             if (response.status === 200) {
                 this.authStore.login();
                 this.alertStore.show('Login successful', 'success');
+                this.$router.push('/dashboard');
             }
         }
     }
