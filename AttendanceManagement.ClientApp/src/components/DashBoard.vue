@@ -23,6 +23,7 @@ import { useAuthStore } from '@/stores/AuthStore';
 import axios, { HttpStatusCode } from 'axios';
 import moment from 'moment';
 
+let timer;
 export default {
     setup() {
         const authStore = useAuthStore();
@@ -51,6 +52,7 @@ export default {
             if (response.status === HttpStatusCode.Created) {
                 this.attendance = response.data;
                 this.isAttendanceFound = true;
+                this.updateStayTime();
             }
         },
         async fetchAttendances(month, year) {
@@ -79,7 +81,7 @@ export default {
             if (minute > 0) {
                 duration += minute + ((minute == 1) ? ' minute ' : ' minutes ');
             }
-            if (second > 0) {
+            if (second >= 0) {
                 duration += second + ((second == 1) ? ' second. ' : ' seconds. ');
             }
 
@@ -87,10 +89,11 @@ export default {
         },
         updateStayTime() {
             this.stayDuration = this.getStayDurationTime(new Date(this.attendance.entryDateTime), new Date());
-            setTimeout(this.updateStayTime, 1000);
+            console.log(this.stayDuration);
+            timer = setTimeout(this.updateStayTime, 1000);
         }
     },
-    async created() {
+    async mounted() {
         const todayDate = new Date();
         const attendances = await this.fetchAttendances(todayDate.getUTCMonth() + 1, todayDate.getUTCFullYear());
 
@@ -104,6 +107,9 @@ export default {
                 this.updateStayTime();
             }
         }
+    },
+    unmounted() {
+        clearTimeout(timer);
     }
 }
 </script> 
