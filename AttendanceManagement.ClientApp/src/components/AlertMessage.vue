@@ -8,6 +8,7 @@
 <script>
 import { useAlertStore } from '@/stores/AlertStore';
 
+let timer;
 export default {
     setup() {
         const alertStore = useAlertStore();
@@ -16,9 +17,12 @@ export default {
     },
     name: 'AlertMessage',
     mounted() {
-        setTimeout(() => {
+        timer = setTimeout(() => {
             this.alertStore.hide();
         }, 6000)
+    },
+    unmounted() {
+        clearTimeout(timer);
     },
     methods: {
         OnCloseButtonClicked() {

@@ -38,13 +38,15 @@
 
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
+import { useAlertStore } from '@/stores/AlertStore';
 import axios, { HttpStatusCode } from 'axios';
 
 export default {
     setup() {
-        const authStore = useAuthStore()
+        const authStore = useAuthStore();
+        const alertStore = useAlertStore();
 
-        return { authStore }
+        return { authStore, alertStore };
     },
     name: 'NavBar',
     methods: {
@@ -53,6 +55,7 @@ export default {
 
             if (response.status === HttpStatusCode.Ok) {
                 this.authStore.logout();
+                this.alertStore.hide();
                 this.$router.push('/login');
             }
         }
