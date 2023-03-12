@@ -18,7 +18,11 @@ export default {
     const alertStore = useAlertStore();
 
     authStore.$subscribe((mutation, state) => {
-      localStorage.setItem('user', JSON.stringify(state.user));
+      if (state.user.isLoggedIn) {
+        localStorage.setItem('user', JSON.stringify(state.user));
+      } else {
+        localStorage.removeItem('user');
+      }
     })
 
     return { authStore, alertStore };

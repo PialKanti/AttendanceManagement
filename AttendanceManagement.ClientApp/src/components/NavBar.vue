@@ -15,8 +15,8 @@
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="/logout" active-class="active" class="nav-link" aria-current="page"
-                            @click="onLogout">Logout</a>
+                        <router-link to="/logout" active-class="active" class="nav-link" aria-current="page"
+                            @click="onLogout">Logout</router-link>
                     </li>
                 </ul>
             </div>
