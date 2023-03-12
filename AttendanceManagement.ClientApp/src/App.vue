@@ -17,6 +17,10 @@ export default {
     const authStore = useAuthStore();
     const alertStore = useAlertStore();
 
+    authStore.$subscribe((mutation, state) => {
+      localStorage.setItem('user', JSON.stringify(state.user));
+    })
+
     return { authStore, alertStore };
   },
   name: 'App',

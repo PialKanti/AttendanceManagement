@@ -53,6 +53,7 @@ export default {
 
             if (response.status === HttpStatusCode.Ok) {
                 this.authStore.logout();
+                this.$router.push('/login');
             }
         }
     }
