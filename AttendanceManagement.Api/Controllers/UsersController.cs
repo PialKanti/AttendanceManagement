@@ -49,7 +49,7 @@ namespace AttendanceManagement.Api.Controllers
         {
             month ??= DateTime.UtcNow.Month;
             year ??= DateTime.UtcNow.Year;
-            var attendances = await _attendanceRepository.GetUserAttendancesByMonthAndYearAsync(username, (int)month, (int)year);
+            var attendances = await _attendanceRepository.GetUserMonthlyAttendancesAsync(username, (int)month, (int)year);
 
             return Ok(attendances);
         }
