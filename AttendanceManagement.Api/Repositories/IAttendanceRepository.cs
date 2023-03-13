@@ -9,5 +9,6 @@ namespace AttendanceManagement.Api.Repositories
         Task UpdateAsync(string id, Attendance attendance);
         Task<Attendance?> GetAsync(string id);
         Task<IEnumerable<AttendanceDto>> GetUserMonthlyAttendancesAsync(string username, int month, int year);
+        IEnumerable<MonthlyAttendanceGroupDto> GetUserYearlyAttendancesAsync(string username, int year);
     }
 }

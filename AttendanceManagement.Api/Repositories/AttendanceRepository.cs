@@ -1,4 +1,5 @@
-﻿using AttendanceManagement.Api.Domain;
+﻿using System.Linq.Expressions;
+using AttendanceManagement.Api.Domain;
 using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Utils;
@@ -44,7 +45,7 @@ namespace AttendanceManagement.Api.Repositories
                 .FirstOrDefaultAsync(attendance => attendance.Id == id);
         }
 
-        public async Task<IEnumerable<AttendanceDto>> GetUserAttendancesByMonthAndYearAsync(string username, int month, int year)
+        public async Task<IEnumerable<AttendanceDto>> GetUserMonthlyAttendancesAsync(string username, int month, int year)
         {
             return await _dbContext.Attendances.Include(attendance => attendance.User)
                 .Where(attendance => attendance.User.UserName == username && attendance.Month == month && attendance.Year == year)
@@ -58,6 +59,24 @@ namespace AttendanceManagement.Api.Repositories
                             ExitDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.ExitTimestamp)
                         })
                 .ToListAsync();
+        }
+
+        public IEnumerable<MonthlyAttendanceGroupDto> GetUserYearlyAttendancesAsync(string username, int year)
+        {
+            return _dbContext.Attendances.Include(attendance => attendance.User)
+                .Where(attendance => attendance.User.UserName == username && attendance.Year == year)
+                .GroupBy(attendance => attendance.Month)
+                .Select(group => new MonthlyAttendanceGroupDto
+                {
+                    Month = group.Key, Attendances = group.OrderBy(a => a.EntryTimestamp).Select(attendance =>
+                        new AttendanceDto
+                        {
+                            Id = attendance.Id,
+                            Username = attendance.User.UserName,
+                            EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp),
+                            ExitDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.ExitTimestamp)
+                        }).ToList()
+                }).ToList();
         }
 
         public async Task UpdateAsync(string id, Attendance attendance)
