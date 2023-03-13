@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AttendanceManagement.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230305185944_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20230313070931_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,10 +102,10 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "49ff8909-19dd-4a0f-9959-6dd590556e8b",
+                            Id = "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "cf290bcf-43b7-4549-9dba-d8a6b7c92d8e",
+                            ConcurrencyStamp = "95627353-10e9-458f-81ef-cd1f3f940150",
                             Email = "admin@test.com",
                             EmailConfirmed = false,
                             FirstName = "Default",
@@ -113,9 +113,9 @@ namespace AttendanceManagement.Api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@TEST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAF0hJMRZX7SPukuRLWJKb6903ZpzAL/6RJ9/3kKjTpJS8bp1Bku89c0PkEeUHMs7A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKc9t++zhnUu52QHKYPvGYpBjnfr5jOpfEzVYl+FeuhCPTBs4Nvk04yvLt2g+u6tkQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "462debe8-ba45-4f29-9669-b07610e78421",
+                            SecurityStamp = "9405f3db-a8e5-4402-a1bc-9ecf35368d19",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -132,7 +132,7 @@ namespace AttendanceManagement.Api.Migrations
                     b.Property<long>("EntryTimestamp")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ExitTimestamp")
+                    b.Property<long?>("ExitTimestamp")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Month")
@@ -140,6 +140,9 @@ namespace AttendanceManagement.Api.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -177,22 +180,22 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e0a1738f-b770-49c5-9818-935f62cba7a8",
-                            ConcurrencyStamp = "5b776d39-aad9-404b-8ce3-786631999226",
+                            Id = "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2",
+                            ConcurrencyStamp = "68ff1c0c-655d-4dc4-973f-be11f4c37731",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "853346e1-d4f4-472c-95f7-327e26814e73",
-                            ConcurrencyStamp = "3cc38019-9d79-4468-a8bb-7abbb7b761f1",
+                            Id = "7a7331e5-afea-4560-b835-6b2fd5cc91fd",
+                            ConcurrencyStamp = "cfe79c09-d44e-4e63-b9da-6f4551e18ed7",
                             Name = "Hr",
                             NormalizedName = "HR"
                         },
                         new
                         {
-                            Id = "dd021bef-c544-40bd-8d4a-389ce42aaa18",
-                            ConcurrencyStamp = "488fb64b-83a9-4bc5-94a0-7642bf5f6dea",
+                            Id = "c2a78c8d-d6e4-4c66-a606-bf2f0ab76a38",
+                            ConcurrencyStamp = "b56e7f38-b145-4578-9e88-68977a1ebb27",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -287,8 +290,8 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "49ff8909-19dd-4a0f-9959-6dd590556e8b",
-                            RoleId = "e0a1738f-b770-49c5-9818-935f62cba7a8"
+                            UserId = "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91",
+                            RoleId = "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2"
                         });
                 });
 

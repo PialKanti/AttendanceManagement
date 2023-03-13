@@ -100,10 +100,10 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a2e45ff8-27b2-444d-8a65-81546fc9ca22",
+                            Id = "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "dd05110a-a759-45b7-b095-a1574b4116af",
+                            ConcurrencyStamp = "95627353-10e9-458f-81ef-cd1f3f940150",
                             Email = "admin@test.com",
                             EmailConfirmed = false,
                             FirstName = "Default",
@@ -111,9 +111,9 @@ namespace AttendanceManagement.Api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@TEST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJCjeVw+ljqjfggYdu/h4lwm0qnPVNOAJbox7pgsYbj2fR+N79oNVy0+Di+IlANB0g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKc9t++zhnUu52QHKYPvGYpBjnfr5jOpfEzVYl+FeuhCPTBs4Nvk04yvLt2g+u6tkQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cc4a8516-c5bf-4649-9e2e-49c02ed4c64c",
+                            SecurityStamp = "9405f3db-a8e5-4402-a1bc-9ecf35368d19",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -130,7 +130,7 @@ namespace AttendanceManagement.Api.Migrations
                     b.Property<long>("EntryTimestamp")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ExitTimestamp")
+                    b.Property<long?>("ExitTimestamp")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Month")
@@ -178,22 +178,22 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2b906077-677a-42ec-960c-4aadf91d045c",
-                            ConcurrencyStamp = "ec0b7c2d-a799-4d32-bea5-8add1ac6cace",
+                            Id = "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2",
+                            ConcurrencyStamp = "68ff1c0c-655d-4dc4-973f-be11f4c37731",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d6689457-18ce-4d11-823e-4ba4883dca0a",
-                            ConcurrencyStamp = "097e10e5-f280-477e-817a-26b9f79250a0",
+                            Id = "7a7331e5-afea-4560-b835-6b2fd5cc91fd",
+                            ConcurrencyStamp = "cfe79c09-d44e-4e63-b9da-6f4551e18ed7",
                             Name = "Hr",
                             NormalizedName = "HR"
                         },
                         new
                         {
-                            Id = "a6e53450-6b2b-47eb-8b41-ccf535de4af3",
-                            ConcurrencyStamp = "56f9e2de-5e37-403d-9518-865eaa3d5a84",
+                            Id = "c2a78c8d-d6e4-4c66-a606-bf2f0ab76a38",
+                            ConcurrencyStamp = "b56e7f38-b145-4578-9e88-68977a1ebb27",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -288,8 +288,8 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "a2e45ff8-27b2-444d-8a65-81546fc9ca22",
-                            RoleId = "2b906077-677a-42ec-960c-4aadf91d045c"
+                            UserId = "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91",
+                            RoleId = "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2"
                         });
                 });
 

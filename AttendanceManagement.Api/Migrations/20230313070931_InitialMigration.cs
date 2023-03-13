@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AttendanceManagement.Api.Migrations
 {
-    public partial class InitialMigrations : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -164,9 +164,10 @@ namespace AttendanceManagement.Api.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EntryTimestamp = table.Column<long>(type: "bigint", nullable: false),
-                    ExitTimestamp = table.Column<long>(type: "bigint", nullable: false),
+                    ExitTimestamp = table.Column<long>(type: "bigint", nullable: true),
                     EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Month = table.Column<int>(type: "int", nullable: false)
+                    Month = table.Column<int>(type: "int", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -183,20 +184,20 @@ namespace AttendanceManagement.Api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "853346e1-d4f4-472c-95f7-327e26814e73", "3cc38019-9d79-4468-a8bb-7abbb7b761f1", "Hr", "HR" },
-                    { "dd021bef-c544-40bd-8d4a-389ce42aaa18", "488fb64b-83a9-4bc5-94a0-7642bf5f6dea", "Employee", "EMPLOYEE" },
-                    { "e0a1738f-b770-49c5-9818-935f62cba7a8", "5b776d39-aad9-404b-8ce3-786631999226", "Admin", "ADMIN" }
+                    { "7a7331e5-afea-4560-b835-6b2fd5cc91fd", "cfe79c09-d44e-4e63-b9da-6f4551e18ed7", "Hr", "HR" },
+                    { "c2a78c8d-d6e4-4c66-a606-bf2f0ab76a38", "b56e7f38-b145-4578-9e88-68977a1ebb27", "Employee", "EMPLOYEE" },
+                    { "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2", "68ff1c0c-655d-4dc4-973f-be11f4c37731", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "49ff8909-19dd-4a0f-9959-6dd590556e8b", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "cf290bcf-43b7-4549-9dba-d8a6b7c92d8e", "admin@test.com", false, "Default", "Admin", false, null, "ADMIN@TEST.COM", "ADMIN", "AQAAAAEAACcQAAAAEAF0hJMRZX7SPukuRLWJKb6903ZpzAL/6RJ9/3kKjTpJS8bp1Bku89c0PkEeUHMs7A==", null, false, "462debe8-ba45-4f29-9669-b07610e78421", false, "admin" });
+                values: new object[] { "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "95627353-10e9-458f-81ef-cd1f3f940150", "admin@test.com", false, "Default", "Admin", false, null, "ADMIN@TEST.COM", "ADMIN", "AQAAAAEAACcQAAAAEKc9t++zhnUu52QHKYPvGYpBjnfr5jOpfEzVYl+FeuhCPTBs4Nvk04yvLt2g+u6tkQ==", null, false, "9405f3db-a8e5-4402-a1bc-9ecf35368d19", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "e0a1738f-b770-49c5-9818-935f62cba7a8", "49ff8909-19dd-4a0f-9959-6dd590556e8b" });
+                values: new object[] { "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2", "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

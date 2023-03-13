@@ -2,10 +2,14 @@
     <div class="content">
         <div class="text-center attendance-given" v-if="isAttendanceFound">
             <p class="today-date">{{ getFormattedDate(new Date(attendance.entryDateTime)) }}</p>
-            <p><span class="in-time font-13pt">In time: </span>{{ getFormattedTime(new Date(attendance.entryDateTime)) }}
+            <p><span class="in-time font-13pt">In time: </span>
+                {{ getFormattedTime(new Date(attendance.entryDateTime)) }}
+            </p>
+            <p v-if="isExitTimeFound"><span class="out-time font-13pt">Out time: </span>
+                {{ getFormattedTime(new Date(attendance.exitDateTime)) }}
             </p>
             <p class="text-muted">You have been inside for {{ stayDuration }}</p>
-            <div class="text-center report-button">
+            <div class="text-center report-button" v-if="isReportExitButtonShown">
                 <button type="button" class="btn btn-danger" @click="reportExit">Report exit time</button>
             </div>
         </div>
@@ -23,7 +27,7 @@ import { useAuthStore } from '@/stores/AuthStore';
 import axios, { HttpStatusCode } from 'axios';
 import moment from 'moment';
 
-let timer;
+let durationTimer;
 export default {
     setup() {
         const authStore = useAuthStore();
@@ -33,9 +37,19 @@ export default {
     name: 'DashBoard',
     data() {
         return {
-            isAttendanceFound: false,
             attendance: {},
             stayDuration: ''
+        }
+    },
+    computed: {
+        isReportExitButtonShown: function () {
+            return this.attendance.entryDateTime && !this.attendance.exitDateTime;
+        },
+        isAttendanceFound: function () {
+            return this.attendance.entryDateTime;
+        },
+        isExitTimeFound: function () {
+            return this.attendance.exitDateTime;
         }
     },
     methods: {
@@ -52,7 +66,23 @@ export default {
             if (response.status === HttpStatusCode.Created) {
                 this.attendance = response.data;
                 this.isAttendanceFound = true;
-                this.updateStayTime();
+                this.showLiveDurationTimer();
+            }
+        },
+        async reportExit() {
+            const todayDate = new Date();
+            const data = {
+                id: this.attendance.id,
+                exitDateTime: todayDate.toISOString()
+            }
+
+            const uri = process.env.VUE_APP_DEV_API_ENDPOINT + 'attendances/' + this.attendance.id;
+            const response = await axios.put(uri, data, { withCredentials: true });
+
+            if (response.status === HttpStatusCode.NoContent) {
+                this.attendance.exitDateTime = data.exitDateTime;
+                this.stopLiveDurationTimer();
+                this.updateStayTime(new Date(this.attendance.exitDateTime));
             }
         },
         async fetchAttendances(month, year) {
@@ -87,10 +117,15 @@ export default {
 
             return duration;
         },
-        updateStayTime() {
-            this.stayDuration = this.getStayDurationTime(new Date(this.attendance.entryDateTime), new Date());
-            console.log(this.stayDuration);
-            timer = setTimeout(this.updateStayTime, 1000);
+        updateStayTime(exitDateTime = new Date()) {
+            this.stayDuration = this.getStayDurationTime(new Date(this.attendance.entryDateTime), exitDateTime);
+        },
+        showLiveDurationTimer() {
+            this.updateStayTime();
+            durationTimer = setTimeout(this.showLiveDurationTimer, 1000);
+        },
+        stopLiveDurationTimer() {
+            clearTimeout(durationTimer);
         }
     },
     async mounted() {
@@ -99,17 +134,22 @@ export default {
 
         if (attendances.length > 0) {
             const lastEntry = attendances[0];
+            console.log(lastEntry);
             const lastEntryDate = new Date(lastEntry.entryDateTime);
 
             if (lastEntryDate.getUTCDate() === todayDate.getUTCDate() && lastEntryDate.getUTCMonth() === todayDate.getUTCMonth() && lastEntryDate.getUTCFullYear() === todayDate.getUTCFullYear()) {
                 this.attendance = lastEntry;
                 this.isAttendanceFound = true;
-                this.updateStayTime();
+                if (this.attendance.entryDate && !this.attendance.exitDateTime) {
+                    this.showLiveDurationTimer();
+                } else {
+                    this.updateStayTime();
+                }
             }
         }
     },
     unmounted() {
-        clearTimeout(timer);
+        this.stopLiveDurationTimer();
     }
 }
 </script> 
@@ -134,6 +174,11 @@ export default {
 
  .in-time {
      color: green;
+     font-weight: 700;
+ }
+
+ .out-time {
+     color: red;
      font-weight: 700;
  }
 

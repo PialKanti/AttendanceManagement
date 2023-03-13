@@ -53,7 +53,7 @@ namespace AttendanceManagement.Api.Controllers
                 Id = attendance.Id,
                 Username = attendance.User?.UserName,
                 EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp),
-                ExitTimestamp = CommonUtils.GetDateTimeFromTimestamp(attendance.ExitTimestamp)
+                ExitDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.ExitTimestamp)
             };
 
             return Ok(attendanceDto);

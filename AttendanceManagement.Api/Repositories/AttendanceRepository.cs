@@ -54,7 +54,8 @@ namespace AttendanceManagement.Api.Repositories
                         {
                             Id = attendance.Id,
                             Username = attendance.User.UserName,
-                            EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp)
+                            EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp),
+                            ExitDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.ExitTimestamp)
                         })
                 .ToListAsync();
         }
