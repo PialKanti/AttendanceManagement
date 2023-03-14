@@ -12,6 +12,10 @@
                         <router-link to="/dashboard" active-class="active" class="nav-link"
                             aria-current="page">Home</router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link to="/history" active-class="active" class="nav-link"
+                            aria-current="page">History</router-link>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">

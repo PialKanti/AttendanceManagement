@@ -134,7 +134,6 @@ export default {
 
         if (attendances.length > 0) {
             const lastEntry = attendances[0];
-            console.log(lastEntry);
             const lastEntryDate = new Date(lastEntry.entryDateTime);
 
             if (lastEntryDate.getUTCDate() === todayDate.getUTCDate() && lastEntryDate.getUTCMonth() === todayDate.getUTCMonth() && lastEntryDate.getUTCFullYear() === todayDate.getUTCFullYear()) {
