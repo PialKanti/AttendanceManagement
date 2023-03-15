@@ -30,7 +30,7 @@ namespace AttendanceManagement.Api.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -162,7 +162,7 @@ namespace AttendanceManagement.Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EntryTimestamp = table.Column<long>(type: "bigint", nullable: false),
                     ExitTimestamp = table.Column<long>(type: "bigint", nullable: true),
                     EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -176,7 +176,8 @@ namespace AttendanceManagement.Api.Migrations
                         name: "FK_Attendances_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -184,20 +185,20 @@ namespace AttendanceManagement.Api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "7a7331e5-afea-4560-b835-6b2fd5cc91fd", "cfe79c09-d44e-4e63-b9da-6f4551e18ed7", "Hr", "HR" },
-                    { "c2a78c8d-d6e4-4c66-a606-bf2f0ab76a38", "b56e7f38-b145-4578-9e88-68977a1ebb27", "Employee", "EMPLOYEE" },
-                    { "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2", "68ff1c0c-655d-4dc4-973f-be11f4c37731", "Admin", "ADMIN" }
+                    { "41795b82-011d-4902-9df3-18e341019fdf", "4082529d-7ff0-4971-b362-0a3b51245e38", "Employee", "EMPLOYEE" },
+                    { "7a83b478-1b21-42e4-89c9-76db0604cf35", "de89853c-f912-449a-a632-6e7997ffbff8", "Hr", "HR" },
+                    { "8cee09c1-fa13-40ef-b86c-42bc74831b48", "59177cc6-3111-4590-995b-aadf3c0d194c", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "95627353-10e9-458f-81ef-cd1f3f940150", "admin@test.com", false, "Default", "Admin", false, null, "ADMIN@TEST.COM", "ADMIN", "AQAAAAEAACcQAAAAEKc9t++zhnUu52QHKYPvGYpBjnfr5jOpfEzVYl+FeuhCPTBs4Nvk04yvLt2g+u6tkQ==", null, false, "9405f3db-a8e5-4402-a1bc-9ecf35368d19", false, "admin" });
+                values: new object[] { "192871d3-cb84-4441-8052-64f440c1b9bd", 0, null, "7fe5d49a-874f-4d26-8d5a-21f45fd37d59", "admin@test.com", false, "Default", "Admin", false, null, "ADMIN@TEST.COM", "ADMIN", "AQAAAAEAACcQAAAAEPBPfGxi2chmhPryAKcK/YI77StbvPXkwlashQmE0NlrHQelfZ4kYWvJDAJW7iBytA==", null, false, "f80325be-c7c7-4777-89ec-d3367cbcc099", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2", "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91" });
+                values: new object[] { "8cee09c1-fa13-40ef-b86c-42bc74831b48", "192871d3-cb84-4441-8052-64f440c1b9bd" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

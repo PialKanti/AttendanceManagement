@@ -9,6 +9,6 @@ namespace AttendanceManagement.Api.Entities
         public string? FirstName { get; set; }
         [Required]
         public string? LastName { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
     }
 }

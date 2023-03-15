@@ -30,7 +30,7 @@ namespace AttendanceManagement.Api.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -100,10 +100,9 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91",
+                            Id = "192871d3-cb84-4441-8052-64f440c1b9bd",
                             AccessFailedCount = 0,
-                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "95627353-10e9-458f-81ef-cd1f3f940150",
+                            ConcurrencyStamp = "7fe5d49a-874f-4d26-8d5a-21f45fd37d59",
                             Email = "admin@test.com",
                             EmailConfirmed = false,
                             FirstName = "Default",
@@ -111,9 +110,9 @@ namespace AttendanceManagement.Api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@TEST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKc9t++zhnUu52QHKYPvGYpBjnfr5jOpfEzVYl+FeuhCPTBs4Nvk04yvLt2g+u6tkQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPBPfGxi2chmhPryAKcK/YI77StbvPXkwlashQmE0NlrHQelfZ4kYWvJDAJW7iBytA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9405f3db-a8e5-4402-a1bc-9ecf35368d19",
+                            SecurityStamp = "f80325be-c7c7-4777-89ec-d3367cbcc099",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -137,6 +136,7 @@ namespace AttendanceManagement.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Year")
@@ -178,22 +178,22 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2",
-                            ConcurrencyStamp = "68ff1c0c-655d-4dc4-973f-be11f4c37731",
+                            Id = "8cee09c1-fa13-40ef-b86c-42bc74831b48",
+                            ConcurrencyStamp = "59177cc6-3111-4590-995b-aadf3c0d194c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7a7331e5-afea-4560-b835-6b2fd5cc91fd",
-                            ConcurrencyStamp = "cfe79c09-d44e-4e63-b9da-6f4551e18ed7",
+                            Id = "7a83b478-1b21-42e4-89c9-76db0604cf35",
+                            ConcurrencyStamp = "de89853c-f912-449a-a632-6e7997ffbff8",
                             Name = "Hr",
                             NormalizedName = "HR"
                         },
                         new
                         {
-                            Id = "c2a78c8d-d6e4-4c66-a606-bf2f0ab76a38",
-                            ConcurrencyStamp = "b56e7f38-b145-4578-9e88-68977a1ebb27",
+                            Id = "41795b82-011d-4902-9df3-18e341019fdf",
+                            ConcurrencyStamp = "4082529d-7ff0-4971-b362-0a3b51245e38",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -288,8 +288,8 @@ namespace AttendanceManagement.Api.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "8ff59fc6-7bd1-486d-961c-d1e6a0dc9e91",
-                            RoleId = "c7e9e204-3e1a-4d86-8a1d-8b840c1970c2"
+                            UserId = "192871d3-cb84-4441-8052-64f440c1b9bd",
+                            RoleId = "8cee09c1-fa13-40ef-b86c-42bc74831b48"
                         });
                 });
 
@@ -316,7 +316,9 @@ namespace AttendanceManagement.Api.Migrations
                 {
                     b.HasOne("AttendanceManagement.Api.Entities.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
