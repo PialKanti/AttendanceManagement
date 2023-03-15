@@ -43,7 +43,8 @@
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
 import { useAlertStore } from '@/stores/AlertStore';
-import axios, { HttpStatusCode } from 'axios';
+import { HttpStatusCode } from 'axios';
+import { client } from '@/clients/HttpClient';
 
 export default {
     setup() {
@@ -55,7 +56,7 @@ export default {
     name: 'NavBar',
     methods: {
         async onLogout() {
-            const response = await axios.get(process.env.VUE_APP_DEV_API_ENDPOINT + 'auth/logout', { withCredentials: true });
+            const response = await client.get('auth/logout', { withCredentials: true });
 
             if (response.status === HttpStatusCode.Ok) {
                 this.authStore.logout();

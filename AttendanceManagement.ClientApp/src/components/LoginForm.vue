@@ -26,7 +26,8 @@
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
 import { useAlertStore } from '@/stores/AlertStore';
-import axios, { HttpStatusCode } from 'axios'
+import { HttpStatusCode } from 'axios'
+import { client } from '@/clients/HttpClient'
 
 export default {
     setup() {
@@ -50,7 +51,7 @@ export default {
             };
 
             this.clearForm();
-            const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'auth/login', data, { withCredentials: true });
+            const response = await client.post('auth/login', data, { withCredentials: true });
 
             if (response.status === HttpStatusCode.Ok) {
                 this.authStore.login(data.userName);

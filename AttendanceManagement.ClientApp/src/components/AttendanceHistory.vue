@@ -11,7 +11,7 @@
 </template>
 <script>
 import HistoryTable from './HistoryTable.vue';
-import axios from 'axios';
+import { client } from '@/clients/HttpClient'
 import { useAuthStore } from '@/stores/AuthStore';
 
 export default {
@@ -37,8 +37,8 @@ export default {
             return (this.activeTab === index) ? 'active' : '';
         },
         async getYearlyAttendances(year) {
-            const uri = process.env.VUE_APP_DEV_API_ENDPOINT + 'users/' + this.authStore.user.username + '/attendances?year=' + year;
-            const response = await axios.get(uri, { withCredentials: true });
+            const uri = 'users/' + this.authStore.user.username + '/attendances?year=' + year;
+            const response = await client.get(uri, { withCredentials: true });
 
             return response.data;
         },

@@ -40,7 +40,7 @@ namespace AttendanceManagement.Api.Controllers
 
             HttpContext.Response.Cookies.Append("X-Access-Token", accessToken, new CookieOptions
             {
-                Expires = DateTime.Now.AddMinutes(30),
+                Expires = DateTime.Now.AddMinutes(2),
                 HttpOnly = true,
                 IsEssential = true,
                 Path = "/",

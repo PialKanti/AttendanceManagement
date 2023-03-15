@@ -42,7 +42,8 @@
 </template>
 
 <script>
-import axios, { HttpStatusCode } from 'axios'
+import { client } from '@/clients/HttpClient';
+import { HttpStatusCode } from 'axios'
 
 export default {
     name: 'RegisterForm',
@@ -69,7 +70,7 @@ export default {
             };
 
             this.clearForm();
-            const response = await axios.post(process.env.VUE_APP_DEV_API_ENDPOINT + 'users', data, { withCredentials: true });
+            const response = await client.post('users', data, { withCredentials: true });
 
             if (response.status === HttpStatusCode.Ok) {
                 this.alertStore.show('Registration successful. Please login to continue.', 'success');

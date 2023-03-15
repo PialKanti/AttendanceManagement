@@ -24,7 +24,8 @@
 </template>
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
-import axios, { HttpStatusCode } from 'axios';
+import { HttpStatusCode } from 'axios';
+import { client } from '@/clients/HttpClient'
 import moment from 'moment';
 
 let durationTimer;
@@ -60,8 +61,8 @@ export default {
                 entryDateTime: todayDate.toISOString()
             }
 
-            const uri = process.env.VUE_APP_DEV_API_ENDPOINT + 'attendances';
-            const response = await axios.post(uri, data, { withCredentials: true });
+            const uri = 'attendances';
+            const response = await client.post(uri, data, { withCredentials: true });
 
             if (response.status === HttpStatusCode.Created) {
                 this.attendance = response.data;
@@ -76,8 +77,8 @@ export default {
                 exitDateTime: todayDate.toISOString()
             }
 
-            const uri = process.env.VUE_APP_DEV_API_ENDPOINT + 'attendances/' + this.attendance.id;
-            const response = await axios.put(uri, data, { withCredentials: true });
+            const uri = 'attendances/' + this.attendance.id;
+            const response = await client.put(uri, data, { withCredentials: true });
 
             if (response.status === HttpStatusCode.NoContent) {
                 this.attendance.exitDateTime = data.exitDateTime;
@@ -86,8 +87,8 @@ export default {
             }
         },
         async fetchAttendances(month, year) {
-            const uri = process.env.VUE_APP_DEV_API_ENDPOINT + 'users/' + this.authStore.user.username + '/attendances?month=' + month + '&year=' + year;
-            const response = await axios.get(uri, { withCredentials: true });
+            const uri = 'users/' + this.authStore.user.username + '/attendances?month=' + month + '&year=' + year;
+            const response = await client.get(uri, { withCredentials: true });
 
             return response.data;
         },
