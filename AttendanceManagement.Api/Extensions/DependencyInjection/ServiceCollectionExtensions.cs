@@ -126,7 +126,12 @@ namespace AttendanceManagement.Api.Extensions.DependencyInjection
         {
             var mapperConfig = new MapperConfiguration(configuration =>
             {
-                configuration.CreateMap<RegisterUserDto, ApplicationUser>();
+                configuration.CreateMap<RegisterUserDto, ApplicationUser>()
+                    .ForMember(destination => destination.BirthDate,
+                        options => options.MapFrom(source =>
+                            string.IsNullOrEmpty(source.BirthDate)
+                                ? (DateTime?)null
+                                : DateTime.Parse(source.BirthDate)));
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
