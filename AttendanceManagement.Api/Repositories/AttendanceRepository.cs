@@ -22,6 +22,8 @@ namespace AttendanceManagement.Api.Repositories
         public async Task<AttendanceDto> CreateAsync(AttendanceCreateDto dtoModel, ApplicationUser user)
         {
             var attendance = _mapper.Map<Attendance>(dtoModel);
+            attendance.Id = Guid.NewGuid().ToString();
+            attendance.User = user;
 
             await _dbContext.Attendances.AddAsync(attendance);
             await _dbContext.SaveChangesAsync();
