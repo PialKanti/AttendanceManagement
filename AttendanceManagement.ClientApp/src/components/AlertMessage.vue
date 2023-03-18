@@ -1,8 +1,7 @@
 <template>
-    <div class="alert alert-dismissible fade show mx-auto" :class="alertStore.alertClass" role="alert">
-        {{ alertStore.message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-            @click="OnCloseButtonClicked"></button>
+    <div class="col-4 mx-auto">
+        <v-alert :type="alertType" :title="alertTitle" :text="alertMessage" @click:close="OnCloseButtonClicked"
+            closable></v-alert>
     </div>
 </template>
 <script>
@@ -16,6 +15,17 @@ export default {
         return { alertStore }
     },
     name: 'AlertMessage',
+    computed: {
+        alertMessage: function () {
+            return this.alertStore.message;
+        },
+        alertType: function () {
+            return this.alertStore.type;
+        },
+        alertTitle: function () {
+            return this.capitalizeFirstLetter(this.alertStore.type);
+        }
+    },
     mounted() {
         timer = setTimeout(() => {
             this.alertStore.hide();
@@ -27,6 +37,9 @@ export default {
     methods: {
         OnCloseButtonClicked() {
             this.alertStore.hide();
+        },
+        capitalizeFirstLetter(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
         }
     }
 }
