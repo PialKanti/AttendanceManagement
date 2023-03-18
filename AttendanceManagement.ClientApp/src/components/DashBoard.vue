@@ -136,8 +136,10 @@ export default {
         if (attendances.length > 0) {
             const lastEntry = attendances[0];
             const lastEntryDate = new Date(lastEntry.entryDateTime);
+            console.log(todayDate.getUTCDate());
+            console.log(lastEntryDate);
 
-            if (lastEntryDate.getUTCDate() === todayDate.getUTCDate() && lastEntryDate.getUTCMonth() === todayDate.getUTCMonth() && lastEntryDate.getUTCFullYear() === todayDate.getUTCFullYear()) {
+            if (lastEntryDate.getDate() === todayDate.getDate() && lastEntryDate.getMonth() === todayDate.getUTCMonth() && lastEntryDate.getFullYear() === todayDate.getFullYear()) {
                 this.attendance = lastEntry;
                 this.isAttendanceFound = true;
                 if (this.attendance.entryDate && this.attendance.exitDateTime) {
