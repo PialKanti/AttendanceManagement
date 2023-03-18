@@ -3,20 +3,10 @@
         <div class="col"></div>
         <div class="col">
             <form @submit.prevent="onSubmit">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" v-model="username" class="form-control" id="username"
-                        aria-describedby="usernameHelp">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" v-model="password" class="form-control" id="password">
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="rememberCheckbox">
-                    <label class="form-check-label" for="rememberCheckbox">Remember me</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <v-text-field label="Username" v-model="username" clearable></v-text-field>
+                <v-text-field type="password" label="Password" v-model="password" clearable></v-text-field>
+                <v-checkbox label="Remember me"></v-checkbox>
+                <v-btn type="submit" color="success">Login</v-btn>
             </form>
         </div>
         <div class="col"></div>
