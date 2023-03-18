@@ -1,27 +1,6 @@
 <template>
-    <div v-if="item">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Day</th>
-                    <th scope="col">Entry</th>
-                    <th scope="col">Exit</th>
-                    <th scope="col">Duration</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in item.attendances" :key="index">
-                    <th scope="row">{{ index + 1 }}</th>
-                    <td>{{ getFormattedDate(item.entryDateTime) }}</td>
-                    <td>{{ getDayofWeek(item.entryDateTime) }}</td>
-                    <td>{{ item.entryDateTime ? getTime(item.entryDateTime) : '' }}</td>
-                    <td>{{ item.exitDateTime ? getTime(item.exitDateTime) : '' }}</td>
-                    <td>{{ getStayDurationTime(item.entryDateTime, item.exitDateTime) }}</td>
-                </tr>
-            </tbody>
-        </table>
+    <div v-if="isAttendanceFound">
+        <v-data-table :headers="headers" :items="attendances" items-per-page="5"></v-data-table>
     </div>
     <div v-else>
         <p class="text-center text-muted no-content-text">No data found.</p>
@@ -29,11 +8,42 @@
 </template>
 <script>
 import moment from 'moment';
+import { VDataTable } from 'vuetify/labs/VDataTable'
 
 export default {
     name: 'HistoryTable',
+    components: {
+        VDataTable
+    },
     props: {
         item: Object
+    },
+    data() {
+        return {
+            headers: [
+                { title: '#', align: 'left', key: 'index', sortable: false },
+                { title: 'Date', align: 'left', key: 'date', sortable: false },
+                { title: 'Day', align: 'left', key: 'day', sortable: false },
+                { title: 'Entry', align: 'left', key: 'entry', sortable: false },
+                { title: 'Exit', align: 'left', key: 'exit', sortable: false },
+                { title: 'Duration', align: 'left', key: 'duration', sortable: false }
+            ],
+            attendances: []
+        }
+    },
+    computed: {
+        isAttendanceFound: function () {
+            if (this.item && this.item.attendances) {
+                return this.item.attendances.length > 0;
+            }
+
+            return 0;
+        }
+    },
+    watch: {
+        item(newItem) {
+            this.attendances = this.prepareAttendanceData(newItem);
+        }
     },
     methods: {
         getFormattedDate(dateString) {
@@ -43,7 +53,9 @@ export default {
             return moment(new Date(dateString)).format('dddd');
         },
         getTime(dateString) {
-            return moment(new Date(dateString)).format('LT');
+            if (dateString)
+                return moment(new Date(dateString)).format('LT');
+            return '';
         },
         getStayDurationTime(entryDateStr, exitDateStr) {
             if (!entryDateStr || !exitDateStr)
@@ -70,6 +82,25 @@ export default {
             }
 
             return duration;
+        },
+        prepareAttendanceData(attendanceObj) {
+            let result = [];
+
+            if (attendanceObj && attendanceObj.attendances) {
+                const itemArray = attendanceObj.attendances;
+
+                for (let i = 0; i < itemArray.length; i++) {
+                    result.push({
+                        index: i + 1,
+                        date: this.getFormattedDate(itemArray[i].entryDateTime),
+                        day: this.getDayofWeek(itemArray[i].entryDateTime),
+                        entry: this.getTime(itemArray[i].entryDateTime),
+                        exit: this.getTime(itemArray[i].exitDateTime),
+                        duration: this.getStayDurationTime(itemArray[i].entryDateTime, itemArray[i].exitDateTime)
+                    });
+                }
+            }
+            return result;
         }
     }
 }
