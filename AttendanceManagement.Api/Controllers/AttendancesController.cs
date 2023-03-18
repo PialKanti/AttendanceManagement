@@ -2,6 +2,7 @@
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Repositories;
 using AttendanceManagement.Api.Utils;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,13 @@ namespace AttendanceManagement.Api.Controllers
     {
         private readonly IAttendanceRepository _repository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public AttendancesController(IAttendanceRepository repository, UserManager<ApplicationUser> userManager)
+        public AttendancesController(IAttendanceRepository repository, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _repository = repository;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         [Authorize]
@@ -48,13 +51,7 @@ namespace AttendanceManagement.Api.Controllers
                 return NotFound("Attendance entry does not exist");
             }
 
-            var attendanceDto = new AttendanceDto
-            {
-                Id = attendance.Id,
-                Username = attendance.User?.UserName,
-                EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp),
-                ExitDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.ExitTimestamp)
-            };
+            var attendanceDto = _mapper.Map<AttendanceDto>(attendance);
 
             return Ok(attendanceDto);
         }

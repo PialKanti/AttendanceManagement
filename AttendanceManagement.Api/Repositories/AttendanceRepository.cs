@@ -3,6 +3,7 @@ using AttendanceManagement.Api.Domain;
 using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Utils;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceManagement.Api.Repositories
@@ -10,23 +11,17 @@ namespace AttendanceManagement.Api.Repositories
     public class AttendanceRepository : IAttendanceRepository
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public AttendanceRepository(ApplicationDbContext dbContext)
+        public AttendanceRepository(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<AttendanceDto> CreateAsync(AttendanceCreateDto dtoModel, ApplicationUser user)
         {
-            var attendance = new Attendance()
-            {
-                Id = Guid.NewGuid().ToString(),
-                User = user,
-                EntryTimestamp = CommonUtils.GetUtcTimestamp(dtoModel.EntryDateTime),
-                EntryDate = dtoModel.EntryDateTime.Date,
-                Month = dtoModel.EntryDateTime.Month,
-                Year = dtoModel.EntryDateTime.Year
-            };
+            var attendance = _mapper.Map<Attendance>(dtoModel);
 
             await _dbContext.Attendances.AddAsync(attendance);
             await _dbContext.SaveChangesAsync();
@@ -50,14 +45,7 @@ namespace AttendanceManagement.Api.Repositories
             return await _dbContext.Attendances.Include(attendance => attendance.User)
                 .Where(attendance => attendance.User.UserName == username && attendance.Month == month && attendance.Year == year)
                 .OrderByDescending(attendance => attendance.EntryDate)
-                .Select(attendance =>
-                        new AttendanceDto
-                        {
-                            Id = attendance.Id,
-                            Username = attendance.User.UserName,
-                            EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp),
-                            ExitDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.ExitTimestamp)
-                        })
+                .Select(attendance => _mapper.Map<AttendanceDto>(attendance))
                 .ToListAsync();
         }
 
@@ -68,14 +56,8 @@ namespace AttendanceManagement.Api.Repositories
                 .GroupBy(attendance => attendance.Month)
                 .Select(group => new MonthlyAttendanceGroupDto
                 {
-                    Month = group.Key, Attendances = group.OrderBy(a => a.EntryTimestamp).Select(attendance =>
-                        new AttendanceDto
-                        {
-                            Id = attendance.Id,
-                            Username = attendance.User.UserName,
-                            EntryDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.EntryTimestamp),
-                            ExitDateTime = CommonUtils.GetDateTimeFromTimestamp(attendance.ExitTimestamp)
-                        }).ToList()
+                    Month = group.Key,
+                    Attendances = group.OrderBy(a => a.EntryTimestamp).Select(attendance => _mapper.Map<AttendanceDto>(attendance)).ToList()
                 }).ToList();
         }
 
