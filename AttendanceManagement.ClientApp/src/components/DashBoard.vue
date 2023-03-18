@@ -10,13 +10,13 @@
             </p>
             <p class="text-muted">You have been inside for {{ stayDuration }}</p>
             <div class="text-center report-button" v-if="isReportExitButtonShown">
-                <button type="button" class="btn btn-danger" @click="reportExit">Report exit time</button>
+                <v-btn color="error" @click="reportExit">Report exit time</v-btn>
             </div>
         </div>
         <div class="no-attendance" v-else>
             <p class="text-center info-text">No data found for today.</p>
             <div class="text-center report-button">
-                <button type="button" class="btn btn-success" @click="reportEntry">Report entry time</button>
+                <v-btn color="success" @click="reportEntry">Report entry time</v-btn>
             </div>
         </div>
 
