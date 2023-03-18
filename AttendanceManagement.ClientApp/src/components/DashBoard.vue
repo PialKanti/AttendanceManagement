@@ -140,10 +140,10 @@ export default {
             if (lastEntryDate.getUTCDate() === todayDate.getUTCDate() && lastEntryDate.getUTCMonth() === todayDate.getUTCMonth() && lastEntryDate.getUTCFullYear() === todayDate.getUTCFullYear()) {
                 this.attendance = lastEntry;
                 this.isAttendanceFound = true;
-                if (this.attendance.entryDate && !this.attendance.exitDateTime) {
-                    this.showLiveDurationTimer();
-                } else {
+                if (this.attendance.entryDate && this.attendance.exitDateTime) {
                     this.updateStayTime();
+                } else {
+                    this.showLiveDurationTimer();
                 }
             }
         }
