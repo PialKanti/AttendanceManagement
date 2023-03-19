@@ -1,5 +1,5 @@
 <template>
-    <v-card class="w-25 mx-auto" title="Log In">
+    <v-card class="w-25 mx-auto" title="Log In" :loading="loading">
         <v-container>
             <v-form @submit.prevent="onSubmit">
                 <v-text-field label="Username" v-model="username" variant="outlined" clearable></v-text-field>
@@ -29,11 +29,14 @@ export default {
     data() {
         return {
             username: '',
-            password: ''
+            password: '',
+            loading: false
         }
     },
     methods: {
         async onSubmit() {
+            this.loading = true;
+
             const data = {
                 userName: this.username,
                 password: this.password
@@ -47,6 +50,8 @@ export default {
                 this.alertStore.show('Login successful', 'success');
                 this.$router.push('/dashboard');
             }
+
+            this.loading = false;
         },
         clearForm() {
             this.username = '';

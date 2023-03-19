@@ -1,5 +1,5 @@
 <template>
-    <v-card class="w-25 mx-auto" title="User Registration">
+    <v-card class="w-25 mx-auto" title="User Registration" :loading="loading">
         <v-container>
             <v-form @submit.prevent="onSubmit">
                 <v-row>
@@ -43,11 +43,14 @@ export default {
             email: '',
             birthday: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            loading: false
         }
     },
     methods: {
         async onSubmit() {
+            this.loading = true;
+
             const data = {
                 firstName: this.firstname,
                 lastName: this.lastname,
@@ -64,6 +67,8 @@ export default {
                 this.alertStore.show('Registration successful. Please login to continue.', 'success');
                 this.$router.push('/login');
             }
+
+            this.loading = false;
         },
         clearForm() {
             this.firstname = '';
