@@ -1,26 +1,32 @@
 <template>
-    <div class="content">
-        <div class="text-center attendance-given" v-if="isAttendanceFound">
-            <p class="today-date">{{ getFormattedDate(new Date(attendance.entryDateTime)) }}</p>
-            <p><span class="in-time font-13pt">In time: </span>
-                {{ getFormattedTime(new Date(attendance.entryDateTime)) }}
-            </p>
-            <p v-if="isExitTimeFound"><span class="out-time font-13pt">Out time: </span>
-                {{ getFormattedTime(new Date(attendance.exitDateTime)) }}
-            </p>
-            <p class="text-muted">You have been inside for {{ stayDuration }}</p>
-            <div class="text-center report-button" v-if="isReportExitButtonShown">
-                <v-btn color="error" @click="reportExit">Report exit time</v-btn>
+    <v-card class="mx-auto" prepend-icon="mdi-calendar-badge" title="Today's Attendance" :subtitle="currentDate"
+        width="450">
+        <v-card-text>
+            <div v-if="isAttendanceFound">
+                <p><span class="in-time"><v-icon icon="mdi-clock-in"></v-icon>In
+                        time:</span>
+                    {{ getFormattedTime(new Date(attendance.entryDateTime)) }}
+                </p>
+                <div v-if="isExitTimeFound">
+                    <p><span class="out-time"><v-icon icon="mdi-clock-out"></v-icon>Out
+                            time:</span>
+                        {{ getFormattedTime(new Date(attendance.exitDateTime)) }}
+                    </p>
+                </div>
+                <p class="text-muted">You have been inside for {{ stayDuration }}</p>
             </div>
-        </div>
-        <div class="no-attendance" v-else>
-            <p class="text-center info-text">No data found for today.</p>
-            <div class="text-center report-button">
-                <v-btn color="success" @click="reportEntry">Report entry time</v-btn>
+            <div class="no-attendance" v-else>
+                <p class="text-center info-text">No data found for today.</p>
             </div>
-        </div>
-
-    </div>
+        </v-card-text>
+        {{ isAttendanceCompleted }}
+        <v-card-actions v-if="isAttendanceCompleted">
+            <v-btn class="mx-auto" color="error" @click="reportExit" v-if="isAttendanceFound" variant="outlined">Report
+                exit
+                time</v-btn>
+            <v-btn color="success" @click="reportEntry" v-else variant="outlined">Report entry time</v-btn>
+        </v-card-actions>
+    </v-card>
 </template>
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
@@ -51,6 +57,12 @@ export default {
         },
         isExitTimeFound: function () {
             return this.attendance.exitDateTime;
+        },
+        currentDate: function () {
+            return this.getFormattedDate(new Date(this.attendance.entryDateTime));
+        },
+        isAttendanceNotCompleted: function () {
+            return this.attendance.entryDateTime == null || this.attendance.exitDateTime == null;
         }
     },
     methods: {
@@ -155,17 +167,17 @@ export default {
     }
 }
 </script> 
-<style scoped> .content {
+<style scoped> .attendance-card {
+     height: 300px;
+ }
+
+ .content {
      margin-top: 60px;
  }
 
  .info-text {
      font-size: 13pt;
      color: grey;
- }
-
- .report-button {
-     margin-top: 20px;
  }
 
  .today-date {
@@ -176,12 +188,10 @@ export default {
 
  .in-time {
      color: green;
-     font-weight: 700;
  }
 
  .out-time {
      color: red;
-     font-weight: 700;
  }
 
  .font-13pt {
