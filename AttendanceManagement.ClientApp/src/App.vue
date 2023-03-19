@@ -1,9 +1,15 @@
 <template>
-  <NavBar />
-  <div class="container">
-    <AlertMessage v-if="alertStore.isShown" />
-    <router-view></router-view>
-  </div>
+  <v-app>
+    <NavBar />
+    <v-main>
+      <v-container fluid>
+        <div class="mt-7">
+          <AlertMessage v-if="alertStore.isShown" />
+          <router-view></router-view>
+        </div>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -34,10 +40,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.container {
-  margin-top: 60px;
-  margin-bottom: 50px;
-}
-</style>

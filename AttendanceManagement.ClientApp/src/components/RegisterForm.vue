@@ -1,32 +1,26 @@
 <template>
-    <div class="row col-6 mx-auto">
-        <form @submit.prevent="onSubmit">
-            <div class="row">
-                <div class="col">
-                    <v-text-field label="First Name" v-model="firstname" clearable></v-text-field>
-                </div>
-                <div class="col">
-                    <v-text-field label="Last Name" v-model="lastname" clearable></v-text-field>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <v-text-field label="Username" v-model="username" clearable></v-text-field>
-            </div>
-            <div class="col-md-6">
-                <v-text-field label="Email" type="email" v-model="email" clearable></v-text-field>
-            </div>
-            <div class="col-md-6">
-                <v-text-field type="date" label="Birthday" v-model="birthday" clearable></v-text-field>
-            </div>
-            <div class="col-md-6">
-                <v-text-field type="password" label="Password" v-model="password" clearable></v-text-field>
-            </div>
-            <div class="col-md-6">
-                <v-text-field type="password" label="Confirm Password" v-model="confirmPassword" clearable></v-text-field>
-            </div>
-            <v-btn type="submit" color="success">Register</v-btn>
-        </form>
-    </div>
+    <v-card class="w-25 mx-auto" title="User Registration">
+        <v-container>
+            <v-form @submit.prevent="onSubmit">
+                <v-row>
+                    <v-col>
+                        <v-text-field label="First Name" v-model="firstname" variant="outlined" clearable></v-text-field>
+                    </v-col>
+                    <v-col>
+                        <v-text-field label="Last Name" v-model="lastname" variant="outlined" clearable></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-text-field label="Username" v-model="username" variant="outlined" clearable></v-text-field>
+                <v-text-field label="Email" type="email" v-model="email" variant="outlined" clearable></v-text-field>
+                <v-text-field type="date" label="Birthday" v-model="birthday" variant="outlined" clearable></v-text-field>
+                <v-text-field type="password" label="Password" v-model="password" variant="outlined"
+                    clearable></v-text-field>
+                <v-text-field type="password" label="Confirm Password" v-model="confirmPassword" variant="outlined"
+                    clearable></v-text-field>
+                <v-btn type="submit" color="success">Register</v-btn>
+            </v-form>
+        </v-container>
+    </v-card>
 </template>
 
 <script>

@@ -1,16 +1,15 @@
 <template>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col">
-            <form @submit.prevent="onSubmit">
-                <v-text-field label="Username" v-model="username" clearable></v-text-field>
-                <v-text-field type="password" label="Password" v-model="password" clearable></v-text-field>
+    <v-card class="w-25 mx-auto" title="Log In">
+        <v-container>
+            <v-form @submit.prevent="onSubmit">
+                <v-text-field label="Username" v-model="username" variant="outlined" clearable></v-text-field>
+                <v-text-field type="password" label="Password" variant="outlined" v-model="password"
+                    clearable></v-text-field>
                 <v-checkbox label="Remember me"></v-checkbox>
                 <v-btn type="submit" color="success">Login</v-btn>
-            </form>
-        </div>
-        <div class="col"></div>
-    </div>
+            </v-form>
+        </v-container>
+    </v-card>
 </template>
 
 <script>
