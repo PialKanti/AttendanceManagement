@@ -1,7 +1,7 @@
 <template>
     <div class="col-4 mx-auto">
-        <v-alert :type="alertType" :title="alertTitle" :text="alertMessage" @click:close="OnCloseButtonClicked"
-            closable></v-alert>
+        <v-alert density="compact" variant="tonal" border="start" :type="alertType" :title="alertTitle" :text="alertMessage"
+            @click:close="OnCloseButtonClicked" closable></v-alert>
     </div>
 </template>
 <script>

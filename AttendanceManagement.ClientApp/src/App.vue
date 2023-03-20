@@ -4,7 +4,7 @@
     <v-main>
       <v-container fluid>
         <div class="mt-7">
-          <AlertMessage v-if="alertStore.isShown" />
+          <AlertMessage v-if="alertStore.isShown" class="alert-message" />
           <router-view></router-view>
         </div>
       </v-container>
@@ -40,3 +40,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.alert-message {
+  margin-bottom: 20px;
+}
+</style>
