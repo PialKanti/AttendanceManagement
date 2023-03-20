@@ -36,6 +36,7 @@
 </template>
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
+import { useAlertStore } from '@/stores/AlertStore';
 import { HttpStatusCode } from 'axios';
 import { client } from '@/clients/HttpClient'
 import moment from 'moment';
@@ -44,8 +45,9 @@ let durationTimer;
 export default {
     setup() {
         const authStore = useAuthStore();
+        const alertStore = useAlertStore();
 
-        return { authStore };
+        return { authStore, alertStore };
     },
     name: 'DashBoard',
     data() {
@@ -169,6 +171,7 @@ export default {
     },
     unmounted() {
         this.stopLiveDurationTimer();
+        this.alertStore.hide();
     }
 }
 </script> 
