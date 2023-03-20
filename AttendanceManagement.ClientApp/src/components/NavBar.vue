@@ -1,43 +1,30 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Attendance</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarLoggedUser" v-if="authStore.user.isLoggedIn">
-                <ul class="navbar-nav mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <router-link to="/dashboard" active-class="active" class="nav-link"
-                            aria-current="page">Home</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/history" active-class="active" class="nav-link"
-                            aria-current="page">History</router-link>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <router-link to="/logout" active-class="active" class="nav-link" aria-current="page"
-                            @click="onLogout">Logout</router-link>
-                    </li>
-                </ul>
-            </div>
-            <div class="collapse navbar-collapse" id="navbarDefault" v-else>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <router-link to="/login" active-class="active" class="nav-link"
-                            aria-current="page">Login</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/register" active-class="active" class="nav-link"
-                            aria-current="page">Register</router-link>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <v-app-bar app :elevation="4">
+        <v-toolbar color="teal-lighten-1">
+            <v-app-bar-nav-icon @click="onDrawerToggled" v-if="authStore.user.isLoggedIn"></v-app-bar-nav-icon>
+            <v-toolbar-title>Attendance</v-toolbar-title>
+            <v-toolbar-items v-if="authStore.user.isLoggedIn">
+                <v-btn to="/logout" @click="onLogout" flat>Logout</v-btn>
+            </v-toolbar-items>
+            <v-toolbar-items v-else>
+                <v-btn to="/login" flat>Login</v-btn>
+                <v-btn to="/register" flat>Register</v-btn>
+            </v-toolbar-items>
+        </v-toolbar>
+    </v-app-bar>
+    <v-navigation-drawer app expand-on-hover clipped v-model="drawer" v-if="authStore.user.isLoggedIn"
+        color="teal-lighten-5">
+        <v-list nav>
+            <v-list>
+                <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path">
+                    <template v-slot:prepend>
+                        <v-icon :icon="item.icon"></v-icon>
+                    </template>
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-list>
+    </v-navigation-drawer>
 </template>
 
 <script>
@@ -54,6 +41,15 @@ export default {
         return { authStore, alertStore };
     },
     name: 'NavBar',
+    data() {
+        return {
+            drawer: true,
+            menuItems: [
+                { title: 'Dashboard', path: '/dashboard', icon: 'mdi-view-dashboard' },
+                { title: 'History', path: '/history', icon: 'mdi-history' }
+            ]
+        }
+    },
     methods: {
         async onLogout() {
             const response = await client.get('auth/logout', { withCredentials: true });
@@ -63,6 +59,9 @@ export default {
                 this.alertStore.hide();
                 this.$router.push('/login');
             }
+        },
+        onDrawerToggled() {
+            this.drawer = !this.drawer;
         }
     }
 }
