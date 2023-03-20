@@ -1,30 +1,36 @@
 <template>
     <v-card class="mx-auto" prepend-icon="mdi-calendar-badge" title="Today's Attendance" :subtitle="currentDate"
         width="450">
-        <v-card-text>
+        <v-card-text class="card-content">
             <div v-if="isAttendanceFound">
-                <p><span class="in-time"><v-icon icon="mdi-clock-in"></v-icon>In
-                        time:</span>
+                <p>
+                    <span class="text-green">
+                        <v-icon icon="mdi-clock-in"></v-icon>
+                        In time:
+                    </span>
                     {{ getFormattedTime(new Date(attendance.entryDateTime)) }}
                 </p>
                 <div v-if="isExitTimeFound">
-                    <p><span class="out-time"><v-icon icon="mdi-clock-out"></v-icon>Out
-                            time:</span>
+                    <p>
+                        <span class="text-red">
+                            <v-icon icon="mdi-clock-out"></v-icon>
+                            Out time:
+                        </span>
                         {{ getFormattedTime(new Date(attendance.exitDateTime)) }}
                     </p>
                 </div>
                 <p class="text-muted">You have been inside for {{ stayDuration }}</p>
             </div>
             <div class="no-attendance" v-else>
-                <p class="text-center info-text">No data found for today.</p>
+                <p class="text-center text-muted">No data found for today.</p>
             </div>
         </v-card-text>
-        {{ isAttendanceCompleted }}
-        <v-card-actions v-if="isAttendanceCompleted">
+        <v-divider v-if="isAttendanceNotCompleted"></v-divider>
+        <v-card-actions v-if="isAttendanceNotCompleted">
             <v-btn class="mx-auto" color="error" @click="reportExit" v-if="isAttendanceFound" variant="outlined">Report
                 exit
                 time</v-btn>
-            <v-btn color="success" @click="reportEntry" v-else variant="outlined">Report entry time</v-btn>
+            <v-btn class="mx-auto" color="success" @click="reportEntry" v-else variant="outlined">Report entry time</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -59,7 +65,7 @@ export default {
             return this.attendance.exitDateTime;
         },
         currentDate: function () {
-            return this.getFormattedDate(new Date(this.attendance.entryDateTime));
+            return this.getFormattedDate(new Date());
         },
         isAttendanceNotCompleted: function () {
             return this.attendance.entryDateTime == null || this.attendance.exitDateTime == null;
@@ -148,14 +154,13 @@ export default {
         if (attendances.length > 0) {
             const lastEntry = attendances[0];
             const lastEntryDate = new Date(lastEntry.entryDateTime);
-            console.log(todayDate.getUTCDate());
-            console.log(lastEntryDate);
 
             if (lastEntryDate.getDate() === todayDate.getDate() && lastEntryDate.getMonth() === todayDate.getUTCMonth() && lastEntryDate.getFullYear() === todayDate.getFullYear()) {
                 this.attendance = lastEntry;
                 this.isAttendanceFound = true;
-                if (this.attendance.entryDate && this.attendance.exitDateTime) {
-                    this.updateStayTime();
+
+                if (this.attendance.entryDateTime && this.attendance.exitDateTime) {
+                    this.updateStayTime(new Date(this.attendance.exitDateTime));
                 } else {
                     this.showLiveDurationTimer();
                 }
@@ -167,34 +172,8 @@ export default {
     }
 }
 </script> 
-<style scoped> .attendance-card {
-     height: 300px;
- }
-
- .content {
-     margin-top: 60px;
- }
-
- .info-text {
-     font-size: 13pt;
-     color: grey;
- }
-
- .today-date {
-     font-weight: 700;
-     font-style: oblique;
-     font-size: 15pt;
- }
-
- .in-time {
-     color: green;
- }
-
- .out-time {
-     color: red;
- }
-
- .font-13pt {
-     font-size: 13pt;
- }
+<style scoped>
+.card-content {
+    margin-top: 20px;
+}
 </style>

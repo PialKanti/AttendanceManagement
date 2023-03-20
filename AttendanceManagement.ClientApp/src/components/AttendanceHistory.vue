@@ -1,17 +1,19 @@
 <template>
     <div>
-        <v-card>
-            <v-tabs bg-color="primary" v-model="tab">
-                <v-tab v-for="(item, index) in months" :key="index" :value="index" @click="onTabItemClicked(index)">
-                    {{ item }}
-                </v-tab>
-            </v-tabs>
+        <v-card class="w-75 mx-auto">
+            <v-card-text>
+                <v-tabs bg-color="primary" v-model="tab" align-tabs="center">
+                    <v-tab v-for="(item, index) in months" :key="index" :value="index" @click="onTabItemClicked(index)">
+                        {{ item }}
+                    </v-tab>
+                </v-tabs>
 
-            <v-window v-model="tab">
-                <v-window-item v-for="(item, index) in months" :key="index" :value="index">
-                    <HistoryTable :item="activeMonthAttendances" />
-                </v-window-item>
-            </v-window>
+                <v-window v-model="tab">
+                    <v-window-item v-for="(item, index) in months" :key="index" :value="index">
+                        <HistoryTable :item="activeMonthAttendances" />
+                    </v-window-item>
+                </v-window>
+            </v-card-text>
         </v-card>
     </div>
 </template>
