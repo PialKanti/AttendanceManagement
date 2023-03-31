@@ -1,11 +1,11 @@
 <template>
     <v-card class="w-25 mx-auto" title="Log In" :loading="loading">
         <v-container>
-            <v-form ref="loginForm" validate-on="submit" @submit.prevent="onSubmit">
+            <v-form ref="loginForm" validate-on="input" @submit.prevent="onSubmit">
                 <v-text-field label="Username" v-model="username" :rules="rules.username" variant="outlined"
                     clearable></v-text-field>
-                <v-text-field type="password" label="Password" variant="outlined" v-model="password"
-                    clearable></v-text-field>
+                <v-text-field class="mt-2" type="password" label="Password" v-model="password" :rules="rules.password"
+                    variant="outlined" clearable></v-text-field>
                 <v-checkbox label="Remember me"></v-checkbox>
                 <v-btn type="submit" color="success">Login</v-btn>
             </v-form>
@@ -64,7 +64,7 @@ export default {
                 password: this.password
             };
 
-            this.clearForm();
+            this.$refs.loginForm.reset();
             const response = await client.post('auth/login', data, { withCredentials: true });
 
             if (response.status === HttpStatusCode.Ok) {
@@ -74,10 +74,6 @@ export default {
             }
 
             this.loading = false;
-        },
-        clearForm() {
-            this.username = '';
-            this.password = '';
         }
     }
 }
