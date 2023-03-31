@@ -1,23 +1,30 @@
 <template>
     <v-card class="w-25 mx-auto" title="User Registration" :loading="loading">
         <v-container>
-            <v-form @submit.prevent="onSubmit">
+            <v-form ref="registerForm" validate-on="input" @submit.prevent="onSubmit">
                 <v-row>
                     <v-col>
-                        <v-text-field label="First Name" v-model="firstname" variant="outlined" clearable></v-text-field>
+                        <v-text-field label="First Name" v-model="firstname" :rules="rules.firstname" variant="outlined"
+                            clearable></v-text-field>
                     </v-col>
                     <v-col>
-                        <v-text-field label="Last Name" v-model="lastname" variant="outlined" clearable></v-text-field>
+                        <v-text-field label="Last Name" v-model="lastname" :rules="rules.lastname" variant="outlined"
+                            clearable></v-text-field>
                     </v-col>
                 </v-row>
-                <v-text-field label="Username" v-model="username" variant="outlined" clearable></v-text-field>
-                <v-text-field label="Email" type="email" v-model="email" variant="outlined" clearable></v-text-field>
-                <v-text-field type="date" label="Birthday" v-model="birthday" variant="outlined" clearable></v-text-field>
-                <v-text-field type="password" label="Password" v-model="password" variant="outlined"
+                <v-text-field class="mt-2" label="Username" v-model="username" :rules="rules.username" variant="outlined"
                     clearable></v-text-field>
-                <v-text-field type="password" label="Confirm Password" v-model="confirmPassword" variant="outlined"
+                <v-text-field class="mt-2" label="Email" type="email" v-model="email" :rules="rules.email"
+                    variant="outlined" clearable></v-text-field>
+                <v-text-field class="mt-2" type="date" label="Birthday" v-model="birthday" variant="outlined"
                     clearable></v-text-field>
-                <v-btn type="submit" color="success">Register</v-btn>
+                <v-text-field class="mt-2" type="password" label="Password" v-model="password" :rules="rules.password"
+                    variant="outlined"
+                    hint="Password must contain at least one digit, lower case, upper case, non alphanumeric( e.g. commas, brackets, space, asterisk and so on) and one unique character."
+                    clearable></v-text-field>
+                <v-text-field class="mt-2" type="password" label="Confirm Password" v-model="confirmPassword"
+                    :rules="rules.confirmPassword" variant="outlined" clearable></v-text-field>
+                <v-btn class="mt-2" type="submit" color="success">Register</v-btn>
             </v-form>
         </v-container>
     </v-card>
@@ -27,6 +34,7 @@
 import { client } from '@/clients/HttpClient';
 import { HttpStatusCode } from 'axios';
 import { useAlertStore } from '@/stores/AlertStore';
+import { containsUpperCase, containsLowerCase, containsNonAlphanumeric, containsDigit, containsUniqueCharacters } from '@/utils/StringUtils';
 
 export default {
     setup() {
@@ -44,11 +52,84 @@ export default {
             birthday: '',
             password: '',
             confirmPassword: '',
-            loading: false
+            loading: false,
+            rules: {
+                firstname: [
+                    value => {
+                        if (value) {
+                            return true;
+                        }
+                        return "First Name is required";
+                    }
+                ],
+                lastname: [
+                    value => {
+                        if (value) {
+                            return true;
+                        }
+                        return "Last Name is required";
+                    }
+                ],
+                username: [
+                    value => {
+                        if (value) {
+                            return true;
+                        }
+                        return "Username is required";
+                    }
+                ],
+                email: [
+                    value => {
+                        if (value) {
+                            return true;
+                        }
+                        return "Email is required";
+                    }
+                ],
+                password: [
+                    value => {
+                        if (value) {
+                            return true;
+                        }
+                        return "Password is required";
+                    },
+                    value => {
+                        if (value.length >= 6) {
+                            return true;
+                        }
+                        return "Minimum 6 characters needed";
+                    },
+                    value => {
+                        if (this.validatePassword(value)) {
+                            return true;
+                        }
+                        return 'Password must contain a upper case, lower case, digit and special character. All characters must be unique.';
+                    }
+                ],
+                confirmPassword: [
+                    value => {
+                        if (value) {
+                            return true;
+                        }
+                        return "Confirm Password is required";
+                    },
+                    value => {
+                        if (value === this.password) {
+                            return true;
+                        }
+
+                        return "Password and Confirm Password do not match";
+                    }
+                ]
+            }
         }
     },
     methods: {
         async onSubmit() {
+            const { valid } = await this.$refs.registerForm.validate();
+            if (valid === false)
+                return;
+
             this.loading = true;
 
             const data = {
@@ -60,7 +141,7 @@ export default {
                 birthDate: this.birthday
             };
 
-            this.clearForm();
+            this.$refs.registerForm.reset();
             const response = await client.post('users', data, { withCredentials: true });
 
             if (response.status === HttpStatusCode.Ok) {
@@ -70,14 +151,24 @@ export default {
 
             this.loading = false;
         },
-        clearForm() {
-            this.firstname = '';
-            this.lastname = '';
-            this.username = '';
-            this.email = '';
-            this.birthday = '';
-            this.password = '';
-            this.confirmPassword = '';
+        validatePassword(password) {
+            if (containsUpperCase(password) === false) {
+                return false;
+            }
+            if (containsLowerCase(password) === false) {
+                return false;
+            }
+            if (containsDigit(password) === false) {
+                return false;
+            }
+            if (containsNonAlphanumeric(password) === false) {
+                return false;
+            }
+            if (containsUniqueCharacters(password) === false) {
+                return false;
+            }
+
+            return true;
         }
     }
 }
