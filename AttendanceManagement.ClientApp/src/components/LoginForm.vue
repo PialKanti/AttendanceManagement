@@ -1,8 +1,9 @@
 <template>
     <v-card class="w-25 mx-auto" title="Log In" :loading="loading">
         <v-container>
-            <v-form @submit.prevent="onSubmit">
-                <v-text-field label="Username" v-model="username" variant="outlined" clearable></v-text-field>
+            <v-form ref="loginForm" validate-on="submit" @submit.prevent="onSubmit">
+                <v-text-field label="Username" v-model="username" :rules="rules.username" variant="outlined"
+                    clearable></v-text-field>
                 <v-text-field type="password" label="Password" variant="outlined" v-model="password"
                     clearable></v-text-field>
                 <v-checkbox label="Remember me"></v-checkbox>
@@ -30,13 +31,34 @@ export default {
         return {
             username: '',
             password: '',
-            loading: false
+            loading: false,
+            rules: {
+                username: [
+                    value => {
+                        if (value) {
+                            return true;
+                        }
+                        return "Username is required";
+                    }
+                ],
+                password: [
+                    value => {
+                        if (value) {
+                            return true;
+                        }
+                        return "Password is required";
+                    }
+                ]
+            }
         }
     },
     methods: {
         async onSubmit() {
-            this.loading = true;
+            const { valid } = await this.$refs.loginForm.validate();
+            if (valid === false)
+                return;
 
+            this.loading = true;
             const data = {
                 userName: this.username,
                 password: this.password
