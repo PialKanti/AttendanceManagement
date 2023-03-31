@@ -18,12 +18,12 @@
                     variant="outlined" clearable></v-text-field>
                 <v-text-field class="mt-2" type="date" label="Birthday" v-model="birthday" variant="outlined"
                     clearable></v-text-field>
-                <v-text-field class="mt-2" type="password" label="Password" v-model="password" :rules="rules.password"
-                    variant="outlined"
-                    hint="Password must contain at least one digit, lower case, upper case, non alphanumeric( e.g. commas, brackets, space, asterisk and so on) and one unique character."
-                    clearable></v-text-field>
-                <v-text-field class="mt-2" type="password" label="Confirm Password" v-model="confirmPassword"
-                    :rules="rules.confirmPassword" variant="outlined" clearable></v-text-field>
+                <v-text-field class="mt-2" :type="passwordType" label="Password" v-model="password" :rules="rules.password"
+                    variant="outlined" :append-icon="passwordAppendIcon" clearable
+                    @click:append="toggleShowPassword"></v-text-field>
+                <v-text-field class="mt-2" :type="confirmPasswordType" label="Confirm Password" v-model="confirmPassword"
+                    :rules="rules.confirmPassword" :append-icon="confirmPasswordAppendIcon" variant="outlined" clearable
+                    @click:append="toggleShowConfirmPassword"></v-text-field>
                 <v-btn class="mt-2" type="submit" color="success">Register</v-btn>
             </v-form>
         </v-container>
@@ -53,6 +53,8 @@ export default {
             password: '',
             confirmPassword: '',
             loading: false,
+            showPassword: false,
+            showConfirmPassword: false,
             rules: {
                 firstname: [
                     value => {
@@ -124,6 +126,20 @@ export default {
             }
         }
     },
+    computed: {
+        passwordType: function () {
+            return this.getInputType(this.showPassword);
+        },
+        confirmPasswordType: function () {
+            return this.getInputType(this.showConfirmPassword);
+        },
+        passwordAppendIcon: function () {
+            return this.getAppendIcon(this.showPassword);
+        },
+        confirmPasswordAppendIcon: function () {
+            return this.getAppendIcon(this.showConfirmPassword);
+        }
+    },
     methods: {
         async onSubmit() {
             const { valid } = await this.$refs.registerForm.validate();
@@ -169,6 +185,18 @@ export default {
             }
 
             return true;
+        },
+        toggleShowPassword() {
+            this.showPassword = !this.showPassword;
+        },
+        toggleShowConfirmPassword() {
+            this.showConfirmPassword = !this.showConfirmPassword;
+        },
+        getInputType(value) {
+            return value ? 'text' : 'password';
+        },
+        getAppendIcon(value) {
+            return value ? 'mdi-eye' : 'mdi-eye-off';
         }
     }
 }

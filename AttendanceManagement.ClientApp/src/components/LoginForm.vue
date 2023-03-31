@@ -4,8 +4,9 @@
             <v-form ref="loginForm" validate-on="input" @submit.prevent="onSubmit">
                 <v-text-field label="Username" v-model="username" :rules="rules.username" variant="outlined"
                     clearable></v-text-field>
-                <v-text-field class="mt-2" type="password" label="Password" v-model="password" :rules="rules.password"
-                    variant="outlined" clearable></v-text-field>
+                <v-text-field class="mt-2" id="password" :type="showPassword ? 'text' : 'password'" label="Password"
+                    v-model="password" :rules="rules.password" :append-icon="appendIcon" variant="outlined" clearable
+                    @click:append="toggleAppendIcon"></v-text-field>
                 <v-checkbox label="Remember me"></v-checkbox>
                 <v-btn type="submit" color="success">Login</v-btn>
             </v-form>
@@ -31,6 +32,7 @@ export default {
         return {
             username: '',
             password: '',
+            showPassword: false,
             loading: false,
             rules: {
                 username: [
@@ -50,6 +52,14 @@ export default {
                     }
                 ]
             }
+        }
+    },
+    computed: {
+        passwordType: function () {
+            return this.showPassword ? 'text' : 'password';
+        },
+        appendIcon: function () {
+            return this.showPassword ? 'mdi-eye' : 'mdi-eye-off';
         }
     },
     methods: {
@@ -74,6 +84,10 @@ export default {
             }
 
             this.loading = false;
+        },
+        toggleAppendIcon() {
+            console.log('toggle');
+            this.showPassword = !this.showPassword;
         }
     }
 }
