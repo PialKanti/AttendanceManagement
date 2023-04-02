@@ -19,6 +19,8 @@
             {
                 ErrorResponseType.UserNotFound => "User not found",
                 ErrorResponseType.WrongCredentials => "Incorrect username or password",
+                ErrorResponseType.RegistrationConflict => "A user with that username or email already exists",
+                ErrorResponseType.AttendanceNotFound => "Attendance entry does not exist",
                 _ => string.Empty
             };
         }

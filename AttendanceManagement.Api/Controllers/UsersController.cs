@@ -1,8 +1,10 @@
 ﻿using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Repositories;
+using AttendanceManagement.Api.Responses.Error;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace AttendanceManagement.Api.Controllers
 {
@@ -25,12 +27,22 @@ namespace AttendanceManagement.Api.Controllers
         {
             if (_userRepository.GetByUserName(userDto.UserName).Result != null)
             {
-                return BadRequest(new { error = "User username already exists" });
+                List<ErrorResponse> errors = new()
+                {
+                    new ErrorResponse(ErrorResponseType.RegistrationConflict,
+                        (int)HttpStatusCode.Conflict)
+                };
+                return Conflict(new ErrorDto(errors));
             }
 
             if (_userRepository.GetByEmail(userDto.Email).Result != null)
             {
-                return BadRequest(new { error = "User email already exists" });
+                List<ErrorResponse> errors = new()
+                {
+                    new ErrorResponse(ErrorResponseType.RegistrationConflict,
+                        (int)HttpStatusCode.Conflict)
+                };
+                return Conflict(new ErrorDto(errors));
             }
 
             var result = await _userRepository.Create(userDto);

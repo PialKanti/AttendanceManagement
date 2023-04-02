@@ -3,6 +3,8 @@
     public enum ErrorResponseType
     {
         UserNotFound,
-        WrongCredentials
+        WrongCredentials,
+        RegistrationConflict,
+        AttendanceNotFound
     }
 }

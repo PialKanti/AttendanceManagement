@@ -1,11 +1,13 @@
 ﻿using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Repositories;
+using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Api.Utils;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace AttendanceManagement.Api.Controllers
 {
@@ -32,7 +34,9 @@ namespace AttendanceManagement.Api.Controllers
             var user = await _userManager.FindByNameAsync(dtoModel.Username);
             if (user == null)
             {
-                return BadRequest("User not found");
+                List<ErrorResponse> errors = new()
+                    { new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound) };
+                return NotFound(new ErrorDto(errors));
             }
 
             var attendanceDto = await _repository.CreateAsync(dtoModel, user);
@@ -48,7 +52,9 @@ namespace AttendanceManagement.Api.Controllers
 
             if (attendance == null)
             {
-                return NotFound("Attendance entry does not exist");
+                List<ErrorResponse> errors = new()
+                    { new ErrorResponse(ErrorResponseType.AttendanceNotFound, (int)HttpStatusCode.NotFound) };
+                return NotFound(new ErrorDto(errors));
             }
 
             var attendanceDto = _mapper.Map<AttendanceDto>(attendance);
