@@ -1,6 +1,8 @@
-﻿using AttendanceManagement.Api.Dtos;
+﻿using System.Net;
+using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Repositories;
+using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,13 +29,15 @@ namespace AttendanceManagement.Api.Controllers
             var user = await _userRepository.GetByUserName(userDto.Username);
             if (user == null)
             {
-                return BadRequest("User not found");
+                List<ErrorResponse> errors = new() { new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound) };
+                return NotFound(new ErrorDto(errors));
             }
 
             var isPasswordValid = await _userRepository.VerifyPassword(user, userDto.Password);
             if (!isPasswordValid)
             {
-                return BadRequest("Username/Password wrong");
+                List<ErrorResponse> errors = new() { new ErrorResponse(ErrorResponseType.WrongCredentials, (int)HttpStatusCode.Unauthorized) };
+                return Unauthorized(new ErrorDto(errors));
             }
 
             var accessToken = _tokenService.CreateToken(user);
