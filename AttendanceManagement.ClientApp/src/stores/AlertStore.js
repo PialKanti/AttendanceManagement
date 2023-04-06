@@ -4,6 +4,7 @@ export const useAlertStore = defineStore('alertStore', {
     state: () => ({
         isShown: false,
         message: '',
+        errors: [],
         type: ''
     }),
     getters: {
@@ -21,9 +22,15 @@ export const useAlertStore = defineStore('alertStore', {
             this.message = message;
             this.type = type;
         },
+        showError(errors, type) {
+            this.isShown = true;
+            this.errors = errors;
+            this.type = type;
+        },
         hide() {
             this.isShown = false;
             this.message = '';
+            this.errors = [];
             this.type = '';
         }
     }

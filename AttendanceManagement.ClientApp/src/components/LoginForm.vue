@@ -17,8 +17,9 @@
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
 import { useAlertStore } from '@/stores/AlertStore';
-import { HttpStatusCode } from 'axios'
-import { client } from '@/clients/HttpClient'
+import { HttpStatusCode } from 'axios';
+import { client } from '@/clients/HttpClient';
+import { AlertType } from '@/enums/enum';
 
 export default {
     setup() {
@@ -74,16 +75,23 @@ export default {
                 password: this.password
             };
 
-            this.$refs.loginForm.reset();
-            const response = await client.post('auth/login', data, { withCredentials: true });
-
-            if (response.status === HttpStatusCode.Ok) {
-                this.authStore.login(data.userName);
-                this.alertStore.show('Login successful', 'success');
-                this.$router.push('/dashboard');
-            }
-
-            this.loading = false;
+            await client.post('auth/login', data, { withCredentials: true })
+                .then(response => {
+                    if (response.status === HttpStatusCode.Ok) {
+                        this.authStore.login(data.userName);
+                        this.alertStore.show('Login successful', AlertType.Success);
+                        this.loading = false;
+                        this.$refs.loginForm.reset();
+                        this.$router.push('/dashboard');
+                    }
+                })
+                .catch(error => {
+                    const errors = error.response.data.errors;
+                    if (errors) {
+                        this.loading = false;
+                        this.alertStore.showError(errors, AlertType.Error);
+                    }
+                });
         },
         toggleAppendIcon() {
             console.log('toggle');

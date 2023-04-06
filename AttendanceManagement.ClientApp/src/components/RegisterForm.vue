@@ -35,6 +35,7 @@ import { client } from '@/clients/HttpClient';
 import { HttpStatusCode } from 'axios';
 import { useAlertStore } from '@/stores/AlertStore';
 import { containsUpperCase, containsLowerCase, containsNonAlphanumeric, containsDigit, containsUniqueCharacters } from '@/utils/StringUtils';
+import { AlertType } from '@/enums/enum';
 
 export default {
     setup() {
@@ -161,7 +162,7 @@ export default {
             const response = await client.post('users', data, { withCredentials: true });
 
             if (response.status === HttpStatusCode.Ok) {
-                this.alertStore.show('Registration successful. Please login to continue.', 'success');
+                this.alertStore.show('Registration successful. Please login to continue.', AlertType.Success);
                 this.$router.push('/login');
             }
 
