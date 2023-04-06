@@ -158,15 +158,23 @@ export default {
                 birthDate: this.birthday
             };
 
-            this.$refs.registerForm.reset();
-            const response = await client.post('users', data, { withCredentials: true });
+            await client.post('users', data, { withCredentials: true })
+                .then(response => {
+                    if (response.status === HttpStatusCode.Ok) {
+                        this.alertStore.show('Registration successful. Please login to continue.', AlertType.Success);
+                        this.loading = false;
+                        this.$refs.registerForm.reset();
+                        this.$router.push('/login');
+                    }
+                })
+                .catch(error => {
+                    const errors = error.response.data.errors;
+                    if (errors) {
+                        this.loading = false;
+                        this.alertStore.showError(errors, AlertType.Error);
+                    }
+                });
 
-            if (response.status === HttpStatusCode.Ok) {
-                this.alertStore.show('Registration successful. Please login to continue.', AlertType.Success);
-                this.$router.push('/login');
-            }
-
-            this.loading = false;
         },
         validatePassword(password) {
             if (containsUpperCase(password) === false) {
