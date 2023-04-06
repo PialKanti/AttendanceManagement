@@ -30,7 +30,6 @@
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
 import { useAlertStore } from '@/stores/AlertStore';
-import { HttpStatusCode } from 'axios';
 import { client } from '@/clients/HttpClient';
 
 export default {
@@ -52,13 +51,14 @@ export default {
     },
     methods: {
         async onLogout() {
-            const response = await client.get('auth/logout', { withCredentials: true });
+            await client.get('auth/logout', { withCredentials: true })
+                .finally(() => {
+                    this.authStore.logout();
+                    this.alertStore.hide();
+                    this.$router.push('/login');
+                });
 
-            if (response.status === HttpStatusCode.Ok) {
-                this.authStore.logout();
-                this.alertStore.hide();
-                this.$router.push('/login');
-            }
+
         },
         onDrawerToggled() {
             this.drawer = !this.drawer;
