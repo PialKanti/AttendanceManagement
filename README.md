@@ -28,20 +28,21 @@ To get started with AttendancePro, you will need to clone the project from the G
 
 ## Installation
 1.  Navigate to the  ***AttendanceManagement/ClientApp*** directory and install the required packages using the following command:
-	```
-	npm install
-	```
 
-
-3.  Navigate to the  ***AttendanceManagement*** directory and run the following command to start the backend server:
+    ```console
+    npm install
     ```
+2.  Navigate to the  ***AttendanceManagement*** directory and run the following command to start the backend server:
+
+    ```console
     dotnet run
     ```
-4.  Open a new terminal window and navigate to the ***AttendanceManagement/ClientApp*** directory. Run the following command to start the frontend server:
-    ```
+3.  Open a new terminal window and navigate to the ***AttendanceManagement/ClientApp*** directory. Run the following command to start the frontend server:
+
+    ```console
     npm run serve
     ```
-5.  Open a web browser and navigate to [http://localhost:8080](http://localhost:8080/) to view the application.
+4.  Open a web browser and navigate to [http://localhost:8080](http://localhost:8080/) to view the application.
 
 ## Deployment
 The application is deployed on Microsoft Azure and can be accessed through the following link: [https://gray-wave-02a77e600.3.azurestaticapps.net](https://gray-wave-02a77e600.3.azurestaticapps.net/)
