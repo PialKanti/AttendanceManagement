@@ -55,6 +55,34 @@ namespace AttendanceManagement.Api.Controllers
             return Ok(result);
         }
 
+        [HttpPut("{username}")]
+        public async Task<IActionResult> Update(string? username, UserUpdateDto userDto)
+        {
+            if (!string.Equals(username, userDto.UserName))
+            {
+                return BadRequest(new ErrorResponse(ErrorResponseType.UsernameInvalid, (int)HttpStatusCode.BadRequest));
+            }
+
+            var user = await _userRepository.GetByUserName(username);
+            if (user == null)
+            {
+                return NotFound(new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound));
+            }
+
+            user.FirstName = userDto.FistName;
+            user.LastName = userDto.LastName;
+            user.Email = userDto.Email;
+
+            var result = await _userRepository.Update(user);
+
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(result);
+        }
+
         [Authorize]
         [HttpGet("{username}/attendances")]
         public async Task<ActionResult<IEnumerable<AttendanceDto>>> Attendances(string username, [FromQuery] int? month, [FromQuery] int? year)

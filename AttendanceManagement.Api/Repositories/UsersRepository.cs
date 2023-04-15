@@ -69,5 +69,10 @@ namespace AttendanceManagement.Api.Repositories
 
             return await _userManager.CheckPasswordAsync(user, password);
         }
+
+        public async Task<IdentityResult> Update(ApplicationUser user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
     }
 }

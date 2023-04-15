@@ -5,6 +5,7 @@
         UserNotFound,
         WrongCredentials,
         RegistrationConflict,
-        AttendanceNotFound
+        AttendanceNotFound,
+        UsernameInvalid
     }
 }
