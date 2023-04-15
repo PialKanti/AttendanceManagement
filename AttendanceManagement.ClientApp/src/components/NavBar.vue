@@ -2,7 +2,7 @@
     <v-app-bar app :elevation="4">
         <v-toolbar color="teal-lighten-1">
             <v-app-bar-nav-icon @click="onDrawerToggled" v-if="authStore.user.isLoggedIn"></v-app-bar-nav-icon>
-            <v-toolbar-title>Attendance</v-toolbar-title>
+            <v-toolbar-title>{{ appName }}</v-toolbar-title>
             <v-toolbar-items v-if="authStore.user.isLoggedIn">
                 <v-btn to="/logout" @click="onLogout" flat>Logout</v-btn>
             </v-toolbar-items>
@@ -48,6 +48,11 @@ export default {
                 { title: 'Dashboard', path: '/dashboard', icon: 'mdi-view-dashboard' },
                 { title: 'History', path: '/history', icon: 'mdi-history' }
             ]
+        }
+    },
+    computed: {
+        appName: function () {
+            return process.env.VUE_APP_NAME;
         }
     },
     methods: {
