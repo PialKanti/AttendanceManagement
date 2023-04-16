@@ -7,9 +7,10 @@ namespace AttendanceManagement.Api.Repositories
     public interface IUsersRepository<T>
     {
         Task<IdentityResult> Create(RegisterUserDto userDto);
-        Task<IdentityResult> Update(T user);
-        Task<T?> GetByUserName(string? username);
+        Task<IdentityResult> UpdateAsync(T user);
+        Task<T?> GetByUserNameAsync(string? username);
         Task<T?> GetByEmail(string? email);
-        Task<bool> VerifyPassword(T user, string? password);
+        Task<bool> VerifyPasswordAsync(T user, string? password);
+        Task<IdentityResult> ChangePasswordAsync(T user, string oldPassword, string newPassword);
     }
 }

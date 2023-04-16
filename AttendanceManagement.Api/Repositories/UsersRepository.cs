@@ -51,7 +51,7 @@ namespace AttendanceManagement.Api.Repositories
             return await _userManager.FindByEmailAsync(email);
         }
 
-        public async Task<ApplicationUser?> GetByUserName(string? username)
+        public async Task<ApplicationUser?> GetByUserNameAsync(string? username)
         {
             if (string.IsNullOrEmpty(username))
                 return null;
@@ -59,7 +59,7 @@ namespace AttendanceManagement.Api.Repositories
             return await _userManager.FindByNameAsync(username);
         }
 
-        public async Task<bool> VerifyPassword(ApplicationUser user, string? password)
+        public async Task<bool> VerifyPasswordAsync(ApplicationUser user, string? password)
         {
             if (user == null)
                 return false;
@@ -70,9 +70,14 @@ namespace AttendanceManagement.Api.Repositories
             return await _userManager.CheckPasswordAsync(user, password);
         }
 
-        public async Task<IdentityResult> Update(ApplicationUser user)
+        public async Task<IdentityResult> UpdateAsync(ApplicationUser user)
         {
             return await _userManager.UpdateAsync(user);
+        }
+
+        public Task<IdentityResult> ChangePasswordAsync(ApplicationUser user, string oldPassword, string newPassword)
+        {
+            return _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
         }
     }
 }

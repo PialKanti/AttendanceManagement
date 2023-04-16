@@ -6,6 +6,7 @@
         WrongCredentials,
         RegistrationConflict,
         AttendanceNotFound,
-        UsernameInvalid
+        UsernameInvalid,
+        WrongOldPassword
     }
 }

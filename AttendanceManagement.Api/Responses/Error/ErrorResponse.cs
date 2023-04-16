@@ -17,11 +17,12 @@
         {
             return type switch
             {
-                ErrorResponseType.UserNotFound => "User not found",
-                ErrorResponseType.WrongCredentials => "Incorrect username or password",
-                ErrorResponseType.RegistrationConflict => "A user with that username or email already exists",
-                ErrorResponseType.AttendanceNotFound => "Attendance entry does not exist",
-                ErrorResponseType.UsernameInvalid => "The provided username is invalid",
+                ErrorResponseType.UserNotFound => "User not found.",
+                ErrorResponseType.WrongCredentials => "Incorrect username or password.",
+                ErrorResponseType.RegistrationConflict => "A user with that username or email already exists.",
+                ErrorResponseType.AttendanceNotFound => "Attendance entry does not exist.",
+                ErrorResponseType.UsernameInvalid => "The provided username is invalid.",
+                ErrorResponseType.WrongOldPassword => "Invalid old password. Please provide the correct old password to change your password.",
                 _ => string.Empty
             };
         }

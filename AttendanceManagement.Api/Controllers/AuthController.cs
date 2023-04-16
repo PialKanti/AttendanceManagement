@@ -26,14 +26,14 @@ namespace AttendanceManagement.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto userDto)
         {
-            var user = await _userRepository.GetByUserName(userDto.Username);
+            var user = await _userRepository.GetByUserNameAsync(userDto.Username);
             if (user == null)
             {
                 List<ErrorResponse> errors = new() { new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound) };
                 return NotFound(new ErrorDto(errors));
             }
 
-            var isPasswordValid = await _userRepository.VerifyPassword(user, userDto.Password);
+            var isPasswordValid = await _userRepository.VerifyPasswordAsync(user, userDto.Password);
             if (!isPasswordValid)
             {
                 List<ErrorResponse> errors = new() { new ErrorResponse(ErrorResponseType.WrongCredentials, (int)HttpStatusCode.Unauthorized) };
