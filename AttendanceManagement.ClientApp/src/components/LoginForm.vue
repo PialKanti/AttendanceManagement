@@ -78,7 +78,7 @@ export default {
             await client.post('auth/login', data, { withCredentials: true })
                 .then(response => {
                     if (response.status === HttpStatusCode.Ok) {
-                        this.authStore.login(data.userName);
+                        this.authStore.login(response.data.user);
                         this.alertStore.show('Login successful', AlertType.Success);
                         this.loading = false;
                         this.$refs.loginForm.reset();

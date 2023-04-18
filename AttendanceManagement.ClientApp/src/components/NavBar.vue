@@ -4,7 +4,8 @@
             <v-app-bar-nav-icon @click="onDrawerToggled" v-if="authStore.user.isLoggedIn"></v-app-bar-nav-icon>
             <v-toolbar-title>{{ appName }}</v-toolbar-title>
             <v-toolbar-items v-if="authStore.user.isLoggedIn">
-                <v-btn to="/logout" @click="onLogout" flat>Logout</v-btn>
+                <AvatarMenu :fullName="userFullName" :username="username" :email="email">
+                </AvatarMenu>
             </v-toolbar-items>
             <v-toolbar-items v-else>
                 <v-btn to="/login" flat>Login</v-btn>
@@ -32,43 +33,52 @@ import { useAuthStore } from '@/stores/AuthStore';
 import { useAlertStore } from '@/stores/AlertStore';
 import { HttpStatusCode } from 'axios';
 import { client } from '@/clients/HttpClient';
+import AvatarMenu from './AvatarMenu.vue';
 
 export default {
     setup() {
         const authStore = useAuthStore();
         const alertStore = useAlertStore();
-
         return { authStore, alertStore };
     },
-    name: 'NavBar',
+    name: "NavBar",
     data() {
         return {
             drawer: true,
             menuItems: [
-                { title: 'Dashboard', path: '/dashboard', icon: 'mdi-view-dashboard' },
-                { title: 'History', path: '/history', icon: 'mdi-history' }
+                { title: "Dashboard", path: "/dashboard", icon: "mdi-view-dashboard" },
+                { title: "History", path: "/history", icon: "mdi-history" }
             ]
-        }
+        };
     },
     computed: {
         appName: function () {
             return process.env.VUE_APP_NAME;
+        },
+        userFullName: function () {
+            return this.authStore.user.firstName + ' ' + this.authStore.user.lastName;
+        },
+        username: function () {
+            return this.authStore.user.username;
+        },
+        email: function () {
+            return this.authStore.user.email;
         }
     },
     methods: {
         async onLogout() {
-            const response = await client.get('auth/logout', { withCredentials: true });
-
+            const response = await client.get("auth/logout", { withCredentials: true });
             if (response.status === HttpStatusCode.Ok) {
                 this.authStore.logout();
                 this.alertStore.hide();
-                this.$router.push('/login');
+                this.$router.push("/login");
             }
         },
         onDrawerToggled() {
             this.drawer = !this.drawer;
         }
-    }
+    },
+    components: { AvatarMenu }
 }
 </script>
 

@@ -3,6 +3,9 @@ import { defineStore } from "pinia";
 let user = {
     isLoggedIn: false,
     username: '',
+    firstName: '',
+    lastName: '',
+    email: ''
 }
 
 if (localStorage.getItem('user')) {
@@ -17,13 +20,22 @@ export const useAuthStore = defineStore('authStore', {
         }
     }),
     actions: {
-        login(username) {
+        login(user) {
             this.user.isLoggedIn = true;
-            this.user.username = username;
+            this.user.username = user.userName;
+            this.user.firstName = user.firstName;
+            this.user.lastName = user.lastName;
+            this.user.email = user.email;
         },
         logout() {
+            this.resetUser();
+        },
+        resetUser() {
             this.user.isLoggedIn = false;
             this.user.username = '';
+            this.user.firstName = '';
+            this.user.lastName = '';
+            this.user.email = '';
         }
     },
 })
