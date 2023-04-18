@@ -35,7 +35,7 @@ namespace AttendanceManagement.Api.Controllers
                 return Conflict(new ErrorDto(errors));
             }
 
-            if (_userRepository.GetByEmail(userDto.Email).Result != null)
+            if (_userRepository.GetByEmailAsync(userDto.Email).Result != null)
             {
                 List<ErrorResponse> errors = new()
                 {
@@ -45,7 +45,7 @@ namespace AttendanceManagement.Api.Controllers
                 return Conflict(new ErrorDto(errors));
             }
 
-            var result = await _userRepository.Create(userDto);
+            var result = await _userRepository.CreateAsync(userDto);
 
             if (!result.Succeeded)
             {

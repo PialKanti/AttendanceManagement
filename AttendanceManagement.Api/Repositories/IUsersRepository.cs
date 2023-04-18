@@ -6,10 +6,10 @@ namespace AttendanceManagement.Api.Repositories
 {
     public interface IUsersRepository<T>
     {
-        Task<IdentityResult> Create(RegisterUserDto userDto);
+        Task<IdentityResult> CreateAsync(RegisterUserDto userDto);
         Task<IdentityResult> UpdateAsync(T user);
         Task<T?> GetByUserNameAsync(string? username);
-        Task<T?> GetByEmail(string? email);
+        Task<T?> GetByEmailAsync(string? email);
         Task<bool> VerifyPasswordAsync(T user, string? password);
         Task<IdentityResult> ChangePasswordAsync(T user, string oldPassword, string newPassword);
     }

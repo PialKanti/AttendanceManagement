@@ -19,7 +19,7 @@ namespace AttendanceManagement.Api.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IdentityResult> Create(RegisterUserDto userDto)
+        public async Task<IdentityResult> CreateAsync(RegisterUserDto userDto)
         {
             var user = _mapper.Map<ApplicationUser>(userDto);
             var result = await _userManager.CreateAsync(user, userDto.Password);
@@ -43,7 +43,7 @@ namespace AttendanceManagement.Api.Repositories
             }
         }
 
-        public async Task<ApplicationUser?> GetByEmail(string? email)
+        public async Task<ApplicationUser?> GetByEmailAsync(string? email)
         {
             if (string.IsNullOrEmpty(email))
                 return null;
