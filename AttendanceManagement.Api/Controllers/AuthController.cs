@@ -54,7 +54,8 @@ namespace AttendanceManagement.Api.Controllers
 
             return Ok(new
             {
-                message = "Login successful"
+                message = "Login successful",
+                user = new UserDto(user)
             });
         }
 
