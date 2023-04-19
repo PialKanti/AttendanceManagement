@@ -60,13 +60,13 @@ namespace AttendanceManagement.Api.Controllers
         {
             if (!string.Equals(username, userDto.UserName))
             {
-                return BadRequest(new ErrorResponse(ErrorResponseType.UsernameInvalid, (int)HttpStatusCode.BadRequest));
+                return BadRequest(new ErrorDto(new List<ErrorResponse> { new ErrorResponse(ErrorResponseType.UsernameInvalid, (int)HttpStatusCode.BadRequest) }));
             }
 
             var user = await _userRepository.GetByUserNameAsync(username);
             if (user == null)
             {
-                return NotFound(new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound));
+                return NotFound(new ErrorDto(new List<ErrorResponse> { new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound) }));
             }
 
             user.FirstName = userDto.FistName;
@@ -97,19 +97,20 @@ namespace AttendanceManagement.Api.Controllers
             return Ok(attendances);
         }
 
+        [Authorize]
         [HttpPost("{username}/password")]
         public async Task<IActionResult> ChangePassword(string username, [FromBody]ChangePasswordDto dtoModel)
         {
             var user = await _userRepository.GetByUserNameAsync(username);
             if (user == null)
             {
-                return NotFound(new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound));
+                return NotFound(new ErrorDto(new List<ErrorResponse> { new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound) }));
             }
 
             bool isVerified = await _userRepository.VerifyPasswordAsync(user, dtoModel.OldPassword);
             if (!isVerified)
             {
-                return Unauthorized(new ErrorResponse(ErrorResponseType.WrongOldPassword, (int) HttpStatusCode.Unauthorized));
+                return BadRequest(new ErrorDto(new List<ErrorResponse> { new ErrorResponse(ErrorResponseType.WrongOldPassword, (int)HttpStatusCode.BadRequest) }));
             }
 
             var result = await _userRepository.ChangePasswordAsync(user, dtoModel.OldPassword, dtoModel.NewPassword);
