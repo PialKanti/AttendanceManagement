@@ -34,7 +34,7 @@
 import { client } from '@/clients/HttpClient';
 import { HttpStatusCode } from 'axios';
 import { useAlertStore } from '@/stores/AlertStore';
-import { containsUpperCase, containsLowerCase, containsNonAlphanumeric, containsDigit, containsUniqueCharacters } from '@/utils/StringUtils';
+import { validatePassword } from '@/utils/passwordUtils';
 import { AlertType } from '@/enums/enum';
 
 export default {
@@ -103,7 +103,7 @@ export default {
                         return "Minimum 6 characters needed";
                     },
                     value => {
-                        if (this.validatePassword(value)) {
+                        if (validatePassword(value)) {
                             return true;
                         }
                         return 'Password must contain a upper case, lower case, digit and special character. All characters must be unique.';
@@ -175,25 +175,6 @@ export default {
                     }
                 });
 
-        },
-        validatePassword(password) {
-            if (containsUpperCase(password) === false) {
-                return false;
-            }
-            if (containsLowerCase(password) === false) {
-                return false;
-            }
-            if (containsDigit(password) === false) {
-                return false;
-            }
-            if (containsNonAlphanumeric(password) === false) {
-                return false;
-            }
-            if (containsUniqueCharacters(password) === false) {
-                return false;
-            }
-
-            return true;
         },
         toggleShowPassword() {
             this.showPassword = !this.showPassword;

@@ -14,7 +14,6 @@ client.interceptors.response.use(function (response) {
 
     if (error.response.status == HttpStatusCode.Unauthorized) {
         authStore.logout();
-        console.log('Unauthorized');
         router.push('/login');
     }
     return Promise.reject(error);
