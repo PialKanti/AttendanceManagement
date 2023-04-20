@@ -2,7 +2,7 @@
     <v-card class="mx-auto" title="Change password" :loading="loading" width="450">
         <v-container>
             <v-form ref="changePasswordForm" validate-on="input" @submit.prevent="onSubmit">
-                <v-text-field id="oldPassword" :type="getPasswordInputType(password.old.show)" label="Old password"
+                <v-text-field id="oldPassword" :type="getPasswordInputType(password.old.show)" label="Current password"
                     v-model="password.old.text" :append-icon="getAppendIcon('old')" @click:append="toggleAppendIcon('old')"
                     :rules="rules.oldPassword" variant="outlined" clearable></v-text-field>
 
