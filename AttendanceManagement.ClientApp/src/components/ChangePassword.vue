@@ -1,5 +1,5 @@
 <template>
-    <v-card class="w-25 mx-auto" title="Change password" :loading="loading">
+    <v-card class="mx-auto" title="Change password" :loading="loading" width="450">
         <v-container>
             <v-form ref="changePasswordForm" validate-on="input" @submit.prevent="onSubmit">
                 <v-text-field id="oldPassword" :type="getPasswordInputType(password.old.show)" label="Old password"
