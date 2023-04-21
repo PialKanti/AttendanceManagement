@@ -18,10 +18,6 @@
                         {{ email }}
                     </p>
                     <v-divider class="my-3"></v-divider>
-                    <v-btn rounded variant="text" to="/profile/password/update">
-                        Change password
-                    </v-btn>
-                    <v-divider class="my-3"></v-divider>
                     <v-btn rounded variant="text" color="danger" to="/logout" @click="onLogout">
                         Logout
                     </v-btn>

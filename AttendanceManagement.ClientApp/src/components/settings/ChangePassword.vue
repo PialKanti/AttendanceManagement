@@ -1,24 +1,22 @@
 <template>
-    <v-card class="mx-auto" title="Change password" :loading="loading" width="450">
-        <v-container>
-            <v-form ref="changePasswordForm" validate-on="input" @submit.prevent="onSubmit">
-                <v-text-field id="oldPassword" :type="getPasswordInputType(password.old.show)" label="Current password"
-                    v-model="password.old.text" :append-icon="getAppendIcon('old')" @click:append="toggleAppendIcon('old')"
-                    :rules="rules.oldPassword" variant="outlined" clearable></v-text-field>
+    <h5>Change password</h5>
+    <v-container>
+        <v-form class="passwordForm" ref="changePasswordForm" validate-on="input" @submit.prevent="onSubmit">
+            <v-text-field id="oldPassword" :type="getPasswordInputType(password.old.show)" label="Current password"
+                v-model="password.old.text" :append-icon="getAppendIcon('old')" @click:append="toggleAppendIcon('old')"
+                :rules="rules.oldPassword" variant="filled" clearable></v-text-field>
 
-                <v-text-field id="newPassword" class="mt-3" :type="getPasswordInputType(password.new.show)"
-                    label="New password" v-model="password.new.text" :append-icon="getAppendIcon('new')"
-                    @click:append="toggleAppendIcon('new')" :rules="rules.newPassword" variant="outlined"
-                    clearable></v-text-field>
+            <v-text-field id="newPassword" class="mt-3" :type="getPasswordInputType(password.new.show)" label="New password"
+                v-model="password.new.text" :append-icon="getAppendIcon('new')" @click:append="toggleAppendIcon('new')"
+                :rules="rules.newPassword" variant="filled" clearable></v-text-field>
 
-                <v-text-field id="confirmPassword" class="mt-3 mb-3" :type="getPasswordInputType(password.confirm.show)"
-                    label="Confirm password" v-model="password.confirm.text" :append-icon="getAppendIcon('confirm')"
-                    @click:append="toggleAppendIcon('confirm')" :rules="rules.confirmPassword" variant="outlined"
-                    clearable></v-text-field>
-                <v-btn type="submit" color="success">Change</v-btn>
-            </v-form>
-        </v-container>
-    </v-card>
+            <v-text-field id="confirmPassword" class="mt-3 mb-3" :type="getPasswordInputType(password.confirm.show)"
+                label="Confirm password" v-model="password.confirm.text" :append-icon="getAppendIcon('confirm')"
+                @click:append="toggleAppendIcon('confirm')" :rules="rules.confirmPassword" variant="filled"
+                clearable></v-text-field>
+            <v-btn type="submit" color="success">Change</v-btn>
+        </v-form>
+    </v-container>
 </template>
 <script>
 import { useAuthStore } from '@/stores/AuthStore';
@@ -119,7 +117,7 @@ export default {
                 newPassword: this.password.new.text
             };
 
-            await client.post(`users/${this.authStore.user.username}/password`, data, { withCredentials: true })
+            await client.post(`users/${this.authStore.user.userName}/password`, data, { withCredentials: true })
                 .then(response => {
                     if (response.status === HttpStatusCode.Ok) {
                         this.alertStore.show('Password changed successfully. Please login to continue.', AlertType.Success);
@@ -165,3 +163,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+.passwordForm {
+    width: 400px;
+}
+</style>

@@ -77,7 +77,7 @@ export default {
         async reportEntry() {
             const todayDate = new Date();
             const data = {
-                username: this.authStore.user.username,
+                username: this.authStore.user.userName,
                 entryDateTime: todayDate.toISOString()
             }
 
@@ -107,7 +107,7 @@ export default {
             }
         },
         async fetchAttendances(month, year) {
-            const uri = 'users/' + this.authStore.user.username + '/attendances?month=' + month + '&year=' + year;
+            const uri = 'users/' + this.authStore.user.userName + '/attendances?month=' + month + '&year=' + year;
             const response = await client.get(uri, { withCredentials: true });
 
             return response.data;

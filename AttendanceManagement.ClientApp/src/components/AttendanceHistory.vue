@@ -51,7 +51,7 @@ export default {
             return (this.activeTab === index) ? 'active' : '';
         },
         async getYearlyAttendances(year) {
-            const uri = 'users/' + this.authStore.user.username + '/attendances?year=' + year;
+            const uri = 'users/' + this.authStore.user.userName + '/attendances?year=' + year;
             const response = await client.get(uri, { withCredentials: true });
 
             return response.data;

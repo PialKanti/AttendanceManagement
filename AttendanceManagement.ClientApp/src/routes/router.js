@@ -2,7 +2,7 @@ import DashBoard from '@/components/DashBoard'
 import AttendanceHistory from '@/components/AttendanceHistory'
 import LoginForm from '@/components/LoginForm'
 import RegisterForm from '@/components/RegisterForm'
-import ChangePassword from '@/components/ChangePassword'
+import ApplicationSettings from '@/components/settings/ApplicationSettings'
 import { useAuthStore } from '@/stores/AuthStore'
 import * as VueRouter from 'vue-router'
 
@@ -13,7 +13,7 @@ const routes = [
     { path: '/login', name: 'Login', component: LoginForm },
     { path: '/register', name: 'Register', component: RegisterForm },
     { path: '/logout', name: 'Logout' },
-    { path: '/profile/password/update', name: 'ChangePassword', component: ChangePassword }
+    { path: '/settings', name: 'ApplicationSettings', component: ApplicationSettings }
 ];
 
 export const router = VueRouter.createRouter({

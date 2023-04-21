@@ -47,7 +47,8 @@ export default {
             drawer: true,
             menuItems: [
                 { title: "Dashboard", path: "/dashboard", icon: "mdi-view-dashboard" },
-                { title: "History", path: "/history", icon: "mdi-history" }
+                { title: "History", path: "/history", icon: "mdi-history" },
+                { title: "Settings", path: "/settings", icon: "mdi-cog" }
             ]
         };
     },
@@ -59,7 +60,7 @@ export default {
             return this.authStore.user.firstName + ' ' + this.authStore.user.lastName;
         },
         username: function () {
-            return this.authStore.user.username;
+            return this.authStore.user.userName;
         },
         email: function () {
             return this.authStore.user.email;
