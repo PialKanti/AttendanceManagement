@@ -69,7 +69,7 @@ namespace AttendanceManagement.Api.Controllers
                 return NotFound(new ErrorDto(new List<ErrorResponse> { new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound) }));
             }
 
-            user.FirstName = userDto.FistName;
+            user.FirstName = userDto.FirstName;
             user.LastName = userDto.LastName;
             user.Email = userDto.Email;
 

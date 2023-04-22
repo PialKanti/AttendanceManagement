@@ -7,7 +7,7 @@ namespace AttendanceManagement.Api.Dtos
         [Required]
         public string? UserName { get; set; }
         [Required]
-        public string? FistName { get; set; }
+        public string? FirstName { get; set; }
         [Required]
         public string? LastName { get; set; }
         [Required]

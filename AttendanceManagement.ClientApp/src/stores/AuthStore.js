@@ -39,6 +39,19 @@ export const useAuthStore = defineStore('authStore', {
             this.user.firstName = '';
             this.user.lastName = '';
             this.user.email = '';
+        },
+        updateUserInfo(user) {
+            if (user.firstName) {
+                this.user.firstName = user.firstName;
+            }
+
+            if (user.lastName) {
+                this.user.lastName = user.lastName;
+            }
+
+            if (user.email) {
+                this.user.email = user.email;
+            }
         }
     },
 })
