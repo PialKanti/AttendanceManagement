@@ -1,4 +1,4 @@
-﻿using AttendanceManagement.Api.Entities;
+﻿using AttendanceManagement.Infrastructure.Identity;
 
 namespace AttendanceManagement.Api.Dtos
 {

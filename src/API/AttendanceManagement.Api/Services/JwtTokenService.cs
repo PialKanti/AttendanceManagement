@@ -1,12 +1,10 @@
-﻿using Microsoft.Extensions.Options;
+﻿using AttendanceManagement.Api.Options;
+using AttendanceManagement.Infrastructure.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AttendanceManagement.Api.Entities;
-using AttendanceManagement.Api.Options;
-using AttendanceManagement.Api.Utils;
 
 namespace AttendanceManagement.Api.Services
 {

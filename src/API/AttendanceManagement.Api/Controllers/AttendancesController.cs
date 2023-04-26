@@ -1,8 +1,9 @@
 ﻿using AttendanceManagement.Api.Dtos;
-using AttendanceManagement.Api.Entities;
-using AttendanceManagement.Api.Repositories;
 using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Api.Utils;
+using AttendanceManagement.Application.Interfaces;
+using AttendanceManagement.Domain.Entities;
+using AttendanceManagement.Infrastructure.Identity;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,11 +17,11 @@ namespace AttendanceManagement.Api.Controllers
     [ApiController]
     public class AttendancesController : ControllerBase
     {
-        private readonly IAttendanceRepository _repository;
+        private readonly IAttendanceRepository<Attendance> _repository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
 
-        public AttendancesController(IAttendanceRepository repository, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public AttendancesController(IAttendanceRepository<Attendance> repository, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _repository = repository;
             _userManager = userManager;
@@ -39,7 +40,10 @@ namespace AttendanceManagement.Api.Controllers
                 return NotFound(new ErrorDto(errors));
             }
 
-            var attendanceDto = await _repository.CreateAsync(dtoModel, user);
+            var attendance = _mapper.Map<Attendance>(dtoModel);
+
+            var attendanceDto = await _repository.CreateAsync(attendance);
+            //todo need to convert to AttendanceDto for sending to client
 
             return CreatedAtAction(nameof(Get), new {id = attendanceDto.Id}, attendanceDto);
         }

@@ -1,6 +1,5 @@
-using AttendanceManagement.Api.Domain;
-using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Extensions.DependencyInjection;
+using AttendanceManagement.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,13 +18,13 @@ builder.Services.AddCookiePolicy(options =>
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AppIdentityDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("AttendanceManagementContext"));
 });
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<AppIdentityDbContext>();
 
 builder.Services.AddConfigurationOptions(builder.Configuration);
 

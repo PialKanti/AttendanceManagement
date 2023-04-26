@@ -1,9 +1,11 @@
 ﻿using AttendanceManagement.Api.Dtos;
-using AttendanceManagement.Api.Entities;
 using AttendanceManagement.Api.Mappers.Formatters;
 using AttendanceManagement.Api.Options;
-using AttendanceManagement.Api.Repositories;
 using AttendanceManagement.Api.Services;
+using AttendanceManagement.Application.Interfaces;
+using AttendanceManagement.Domain.Entities;
+using AttendanceManagement.Infrastructure.Data.Repositories;
+using AttendanceManagement.Infrastructure.Identity;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -118,7 +120,7 @@ namespace AttendanceManagement.Api.Extensions.DependencyInjection
         {
             services.AddScoped<IUsersRepository<ApplicationUser>, UsersRepository>();
             services.AddScoped<JwtTokenService, JwtTokenService>();
-            services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+            services.AddScoped<IAttendanceRepository<Attendance>, AttendanceRepository>();
 
             return services;
         }
@@ -134,11 +136,11 @@ namespace AttendanceManagement.Api.Extensions.DependencyInjection
                                 ? (DateTime?)null
                                 : DateTime.Parse(source.BirthDate)));
 
-                configuration.CreateMap<Attendance, AttendanceDto>()
-                    .ForMember(destination => destination.Username,
-                        options => options.MapFrom(source => (source.User != null) ? source.User.UserName : string.Empty))
-                    .ForMember(destination => destination.EntryDateTime, options => options.ConvertUsing<TimestampToDateTimeFormatter, long?>(source => source.EntryTimestamp))
-                    .ForMember(destination => destination.ExitDateTime, options => options.ConvertUsing<TimestampToDateTimeFormatter, long?>(source => source.ExitTimestamp));
+                //configuration.CreateMap<Attendance, AttendanceDto>()
+                //    .ForMember(destination => destination.Username,
+                //        options => options.MapFrom(source => (source.User != null) ? source.User.UserName : string.Empty))
+                //    .ForMember(destination => destination.EntryDateTime, options => options.ConvertUsing<TimestampToDateTimeFormatter, long?>(source => source.EntryTimestamp))
+                //    .ForMember(destination => destination.ExitDateTime, options => options.ConvertUsing<TimestampToDateTimeFormatter, long?>(source => source.ExitTimestamp));
 
                 configuration.CreateMap<AttendanceCreateDto, Attendance>()
                     .ForMember(destination => destination.EntryTimestamp, options => options.ConvertUsing<DateTimeToTimestampFormatter, DateTime>(source => source.EntryDateTime))

@@ -1,10 +1,12 @@
 ﻿using AttendanceManagement.Api.Dtos;
-using AttendanceManagement.Api.Entities;
-using AttendanceManagement.Api.Repositories;
 using AttendanceManagement.Api.Responses.Error;
+using AttendanceManagement.Application.Interfaces;
+using AttendanceManagement.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using AttendanceManagement.Domain.Entities;
+using AutoMapper;
 
 namespace AttendanceManagement.Api.Controllers
 {
@@ -14,12 +16,14 @@ namespace AttendanceManagement.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersRepository<ApplicationUser> _userRepository;
-        private readonly IAttendanceRepository _attendanceRepository;
+        private readonly IAttendanceRepository<Attendance> _attendanceRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUsersRepository<ApplicationUser> userRepository, IAttendanceRepository attendanceRepository)
+        public UsersController(IUsersRepository<ApplicationUser> userRepository, IAttendanceRepository<Attendance> attendanceRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _attendanceRepository = attendanceRepository;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -45,12 +49,9 @@ namespace AttendanceManagement.Api.Controllers
                 return Conflict(new ErrorDto(errors));
             }
 
-            var result = await _userRepository.CreateAsync(userDto);
+            var user = _mapper.Map<ApplicationUser>(userDto);
 
-            if (!result.Succeeded)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            var result = await _userRepository.CreateAsync(user, userDto.Password);
 
             return Ok(result);
         }
@@ -75,11 +76,6 @@ namespace AttendanceManagement.Api.Controllers
 
             var result = await _userRepository.UpdateAsync(user);
 
-            if (!result.Succeeded)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-
             return Ok(result);
         }
 
@@ -87,14 +83,15 @@ namespace AttendanceManagement.Api.Controllers
         [HttpGet("{username}/attendances")]
         public async Task<ActionResult<IEnumerable<AttendanceDto>>> Attendances(string username, [FromQuery] int? month, [FromQuery] int? year)
         {
-            year ??= DateTime.UtcNow.Year;
-            if (month == null)
-            {
-                return Ok(_attendanceRepository.GetUserYearlyAttendancesAsync(username, (int) year));
-            }
+            //year ??= DateTime.UtcNow.Year;
+            //if (month == null)
+            //{
+            //    return Ok(_attendanceRepository.GetUserYearlyAttendancesAsync(username, (int) year));
+            //}
 
-            var attendances = await _attendanceRepository.GetUserMonthlyAttendancesAsync(username, (int)month, (int)year);
-            return Ok(attendances);
+            //var attendances = await _attendanceRepository.GetUserMonthlyAttendancesAsync(username, (int)month, (int)year);
+            //return Ok(attendances);
+            throw new NotImplementedException();
         }
 
         [Authorize]
@@ -115,7 +112,7 @@ namespace AttendanceManagement.Api.Controllers
 
             var result = await _userRepository.ChangePasswordAsync(user, dtoModel.OldPassword, dtoModel.NewPassword);
 
-            if (!result.Succeeded)
+            if (!result)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

@@ -1,11 +1,11 @@
-﻿using System.Net;
-using AttendanceManagement.Api.Dtos;
-using AttendanceManagement.Api.Entities;
-using AttendanceManagement.Api.Repositories;
+﻿using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using AttendanceManagement.Application.Interfaces;
+using AttendanceManagement.Infrastructure.Identity;
 
 namespace AttendanceManagement.Api.Controllers
 {
