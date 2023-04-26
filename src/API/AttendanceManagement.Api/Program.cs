@@ -1,7 +1,4 @@
 using AttendanceManagement.Api.Extensions.DependencyInjection;
-using AttendanceManagement.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,13 +15,7 @@ builder.Services.AddCookiePolicy(options =>
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AttendanceManagementContext"));
-});
-
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppIdentityDbContext>();
+AttendanceManagement.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
 builder.Services.AddConfigurationOptions(builder.Configuration);
 
