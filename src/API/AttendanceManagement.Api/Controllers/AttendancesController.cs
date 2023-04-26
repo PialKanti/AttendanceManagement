@@ -1,6 +1,7 @@
 ﻿using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Api.Utils;
+using AttendanceManagement.Application.Dtos;
 using AttendanceManagement.Application.Interfaces;
 using AttendanceManagement.Domain.Entities;
 using AttendanceManagement.Infrastructure.Identity;
@@ -12,10 +13,7 @@ using System.Net;
 
 namespace AttendanceManagement.Api.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1.0")]
-    [ApiController]
-    public class AttendancesController : ControllerBase
+    public class AttendancesController : BaseApiController
     {
         private readonly IAttendanceRepository<Attendance> _repository;
         private readonly UserManager<ApplicationUser> _userManager;

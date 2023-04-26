@@ -1,18 +1,15 @@
 ﻿using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Api.Services;
+using AttendanceManagement.Application.Interfaces;
+using AttendanceManagement.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using AttendanceManagement.Application.Interfaces;
-using AttendanceManagement.Infrastructure.Identity;
 
 namespace AttendanceManagement.Api.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1.0")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseApiController
     {
         private readonly IUsersRepository<ApplicationUser> _userRepository;
         private readonly JwtTokenService _tokenService;

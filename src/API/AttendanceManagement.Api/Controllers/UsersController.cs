@@ -1,25 +1,24 @@
 ﻿using AttendanceManagement.Api.Dtos;
 using AttendanceManagement.Api.Responses.Error;
+using AttendanceManagement.Application.Dtos;
 using AttendanceManagement.Application.Interfaces;
+using AttendanceManagement.Domain.Entities;
 using AttendanceManagement.Infrastructure.Identity;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using AttendanceManagement.Domain.Entities;
-using AutoMapper;
 
 namespace AttendanceManagement.Api.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1.0")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
         private readonly IUsersRepository<ApplicationUser> _userRepository;
         private readonly IAttendanceRepository<Attendance> _attendanceRepository;
         private readonly IMapper _mapper;
 
-        public UsersController(IUsersRepository<ApplicationUser> userRepository, IAttendanceRepository<Attendance> attendanceRepository, IMapper mapper)
+        public UsersController(IUsersRepository<ApplicationUser> userRepository,
+            IAttendanceRepository<Attendance> attendanceRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _attendanceRepository = attendanceRepository;
@@ -83,15 +82,22 @@ namespace AttendanceManagement.Api.Controllers
         [HttpGet("{username}/attendances")]
         public async Task<ActionResult<IEnumerable<AttendanceDto>>> Attendances(string username, [FromQuery] int? month, [FromQuery] int? year)
         {
-            //year ??= DateTime.UtcNow.Year;
-            //if (month == null)
-            //{
-            //    return Ok(_attendanceRepository.GetUserYearlyAttendancesAsync(username, (int) year));
-            //}
+            var user = await _userRepository.GetByUserNameAsync(username);
+            if (user == null)
+            {
+                return NotFound(new ErrorDto(new List<ErrorResponse> { new ErrorResponse(ErrorResponseType.UserNotFound, (int)HttpStatusCode.NotFound) }));
+            }
 
-            //var attendances = await _attendanceRepository.GetUserMonthlyAttendancesAsync(username, (int)month, (int)year);
-            //return Ok(attendances);
-            throw new NotImplementedException();
+            year ??= DateTime.UtcNow.Year;
+            if (month == null)
+            {
+                return Ok(_attendanceRepository.GetUserYearlyAttendancesAsync(user.Id, (int)year));
+            }
+
+            var dateTime = new DateTime((int)year, (int)month, 1);
+
+            var attendances = await _attendanceRepository.GetUserMonthlyAttendancesAsync(user.Id, dateTime);
+            return Ok(attendances);
         }
 
         [Authorize]

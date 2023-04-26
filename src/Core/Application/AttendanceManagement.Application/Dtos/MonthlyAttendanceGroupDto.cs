@@ -1,4 +1,4 @@
-﻿namespace AttendanceManagement.Api.Dtos
+﻿namespace AttendanceManagement.Application.Dtos
 {
     public class MonthlyAttendanceGroupDto
     {
