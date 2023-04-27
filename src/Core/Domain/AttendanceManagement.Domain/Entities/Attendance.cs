@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AttendanceManagement.Domain.Entities
 {
     public class Attendance : BaseEntity
     {
         [Required]
+        public string AttendeeId { get; set; }
+        [NotMapped]
         public IAttendee Attendee { get; set; }
         [Required]
         public long EntryTimestamp { get; set; }
