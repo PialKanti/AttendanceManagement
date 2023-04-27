@@ -138,8 +138,6 @@ namespace AttendanceManagement.Api.Extensions.DependencyInjection
                                 : DateTime.Parse(source.BirthDate)));
 
                 configuration.CreateMap<Attendance, AttendanceDto>()
-                    .ForMember(destination => destination.Username,
-                        options => options.MapFrom(source => source.Attendee.UserName))
                     .ForMember(destination => destination.EntryDateTime,
                         options => options.ConvertUsing<TimestampToDateTimeFormatter, long?>(source =>
                             source.EntryTimestamp))

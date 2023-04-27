@@ -37,7 +37,7 @@ namespace AttendanceManagement.Infrastructure.Data.Repositories
         public async Task<IEnumerable<AttendanceDto>> GetUserMonthlyAttendancesAsync(string userId, DateTime dateTime)
         {
             return await _dbContext.Attendances.Where(attendance =>
-                    attendance.Attendee.Id == userId && attendance.Month == dateTime.Month &&
+                    attendance.UserId == userId && attendance.Month == dateTime.Month &&
                     attendance.Year == dateTime.Year)
                 .OrderByDescending(attendance => attendance.EntryDate)
                 .Select(attendance => _mapper.Map<AttendanceDto>(attendance))
@@ -47,7 +47,7 @@ namespace AttendanceManagement.Infrastructure.Data.Repositories
         public async Task<IEnumerable<MonthlyAttendanceGroupDto>> GetUserYearlyAttendancesAsync(string userId, int year)
         {
             return await _dbContext.Attendances
-                .Where(attendance => attendance.Attendee.Id == userId && attendance.Year == year)
+                .Where(attendance => attendance.UserId == userId && attendance.Year == year)
                 .GroupBy(attendance => attendance.Month)
                 .Select(group => new MonthlyAttendanceGroupDto
                 {

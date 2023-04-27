@@ -6,9 +6,7 @@ namespace AttendanceManagement.Domain.Entities
     public class Attendance : BaseEntity
     {
         [Required]
-        public string AttendeeId { get; set; }
-        [NotMapped]
-        public IAttendee Attendee { get; set; }
+        public string UserId { get; set; }
         [Required]
         public long EntryTimestamp { get; set; }
         public long? ExitTimestamp { get; set; }

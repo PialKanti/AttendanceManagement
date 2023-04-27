@@ -39,8 +39,7 @@ namespace AttendanceManagement.Api.Controllers
             }
 
             var attendance = _mapper.Map<Attendance>(dtoModel);
-            attendance.AttendeeId = user.Id;
-            attendance.Attendee = new IdentityUserAttendee(user);
+            attendance.UserId = user.Id;
 
             var attendanceDto = await _attendanceRepository.CreateAsync(attendance);
 
