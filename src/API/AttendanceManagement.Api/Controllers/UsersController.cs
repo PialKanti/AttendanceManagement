@@ -1,4 +1,5 @@
 ﻿using AttendanceManagement.Api.Dtos;
+using AttendanceManagement.Api.Dtos.Request;
 using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Application.Dtos;
 using AttendanceManagement.Application.Interfaces;
@@ -26,7 +27,7 @@ namespace AttendanceManagement.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RegisterUserDto userDto)
+        public async Task<IActionResult> Create([FromBody] RegisterUserRequest userDto)
         {
             if (_userRepository.GetByUserNameAsync(userDto.UserName).Result != null)
             {
@@ -56,7 +57,7 @@ namespace AttendanceManagement.Api.Controllers
         }
 
         [HttpPut("{username}")]
-        public async Task<IActionResult> Update(string? username, UserUpdateDto userDto)
+        public async Task<IActionResult> Update(string? username, UserUpdateRequest userDto)
         {
             if (!string.Equals(username, userDto.UserName))
             {
@@ -102,7 +103,7 @@ namespace AttendanceManagement.Api.Controllers
 
         [Authorize]
         [HttpPost("{username}/password")]
-        public async Task<IActionResult> ChangePassword(string username, [FromBody]ChangePasswordDto dtoModel)
+        public async Task<IActionResult> ChangePassword(string username, [FromBody]ChangePasswordRequest dtoModel)
         {
             var user = await _userRepository.GetByUserNameAsync(username);
             if (user == null)

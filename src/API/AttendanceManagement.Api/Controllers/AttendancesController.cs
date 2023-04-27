@@ -1,4 +1,5 @@
 ﻿using AttendanceManagement.Api.Dtos;
+using AttendanceManagement.Api.Dtos.Request;
 using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Api.Utils;
 using AttendanceManagement.Application.Dtos;
@@ -7,7 +8,6 @@ using AttendanceManagement.Domain.Entities;
 using AttendanceManagement.Infrastructure.Identity;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -15,22 +15,22 @@ namespace AttendanceManagement.Api.Controllers
 {
     public class AttendancesController : BaseApiController
     {
-        private readonly IAttendanceRepository<Attendance> _repository;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAttendanceRepository<Attendance> _attendanceRepository;
+        private readonly IUsersRepository<ApplicationUser> _usersRepository;
         private readonly IMapper _mapper;
 
-        public AttendancesController(IAttendanceRepository<Attendance> repository, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public AttendancesController(IAttendanceRepository<Attendance> attendanceRepository, IUsersRepository<ApplicationUser> usersRepository, IMapper mapper)
         {
-            _repository = repository;
-            _userManager = userManager;
+            _attendanceRepository = attendanceRepository;
+            _usersRepository = usersRepository;
             _mapper = mapper;
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AttendanceCreateDto dtoModel)
+        public async Task<IActionResult> Create([FromBody] AttendanceCreateRequest dtoModel)
         {
-            var user = await _userManager.FindByNameAsync(dtoModel.Username);
+            var user = await _usersRepository.GetByUserNameAsync(dtoModel.Username);
             if (user == null)
             {
                 List<ErrorResponse> errors = new()
@@ -39,9 +39,9 @@ namespace AttendanceManagement.Api.Controllers
             }
 
             var attendance = _mapper.Map<Attendance>(dtoModel);
+            attendance.Attendee = new IdentityUserAttendee(user);
 
-            var attendanceDto = await _repository.CreateAsync(attendance);
-            //todo need to convert to AttendanceDto for sending to client
+            var attendanceDto = await _attendanceRepository.CreateAsync(attendance);
 
             return CreatedAtAction(nameof(Get), new {id = attendanceDto.Id}, attendanceDto);
         }
@@ -50,7 +50,7 @@ namespace AttendanceManagement.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AttendanceDto>> Get(string id)
         {
-            var attendance = await _repository.GetAsync(id);
+            var attendance = await _attendanceRepository.GetAsync(id);
 
             if (attendance == null)
             {
@@ -66,21 +66,21 @@ namespace AttendanceManagement.Api.Controllers
 
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] AttendanceUpdateDto dtoModel)
+        public async Task<IActionResult> Put(string id, [FromBody] AttendanceUpdateRequest dtoModel)
         {
             if (id != dtoModel.Id)
             {
                 return BadRequest();
             }
 
-            var attendance = await _repository.GetAsync(id);
+            var attendance = await _attendanceRepository.GetAsync(id);
             if (attendance == null)
             {
                 return NotFound();
             }
 
             attendance.ExitTimestamp = CommonUtils.GetUtcTimestamp(dtoModel.ExitDateTime);
-            await _repository.UpdateAsync(id, attendance);
+            await _attendanceRepository.UpdateAsync(id, attendance);
 
             return NoContent();
         }

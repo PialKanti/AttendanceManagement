@@ -1,4 +1,4 @@
-﻿using AttendanceManagement.Api.Dtos;
+﻿using AttendanceManagement.Api.Dtos.Request;
 using AttendanceManagement.Api.Mappers.Formatters;
 using AttendanceManagement.Api.Options;
 using AttendanceManagement.Api.Services;
@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using AttendanceManagement.Application.Dtos;
 
 namespace AttendanceManagement.Api.Extensions.DependencyInjection
 {
@@ -129,24 +130,33 @@ namespace AttendanceManagement.Api.Extensions.DependencyInjection
         {
             var mapperConfig = new MapperConfiguration(configuration =>
             {
-                configuration.CreateMap<RegisterUserDto, ApplicationUser>()
+                configuration.CreateMap<RegisterUserRequest, ApplicationUser>()
                     .ForMember(destination => destination.BirthDate,
                         options => options.MapFrom(source =>
                             string.IsNullOrEmpty(source.BirthDate)
                                 ? (DateTime?)null
                                 : DateTime.Parse(source.BirthDate)));
 
-                //configuration.CreateMap<Attendance, AttendanceDto>()
-                //    .ForMember(destination => destination.Username,
-                //        options => options.MapFrom(source => (source.User != null) ? source.User.UserName : string.Empty))
-                //    .ForMember(destination => destination.EntryDateTime, options => options.ConvertUsing<TimestampToDateTimeFormatter, long?>(source => source.EntryTimestamp))
-                //    .ForMember(destination => destination.ExitDateTime, options => options.ConvertUsing<TimestampToDateTimeFormatter, long?>(source => source.ExitTimestamp));
+                configuration.CreateMap<Attendance, AttendanceDto>()
+                    .ForMember(destination => destination.Username,
+                        options => options.MapFrom(source => source.Attendee.UserName))
+                    .ForMember(destination => destination.EntryDateTime,
+                        options => options.ConvertUsing<TimestampToDateTimeFormatter, long?>(source =>
+                            source.EntryTimestamp))
+                    .ForMember(destination => destination.ExitDateTime,
+                        options => options.ConvertUsing<TimestampToDateTimeFormatter, long?>(source =>
+                            source.ExitTimestamp));
 
-                configuration.CreateMap<AttendanceCreateDto, Attendance>()
-                    .ForMember(destination => destination.EntryTimestamp, options => options.ConvertUsing<DateTimeToTimestampFormatter, DateTime>(source => source.EntryDateTime))
-                    .ForMember(destination => destination.EntryDate, options => options.MapFrom(source => source.EntryDateTime.Date))
-                    .ForMember(destination => destination.Month, options => options.MapFrom(source => source.EntryDateTime.Month))
-                    .ForMember(destination => destination.Year, options => options.MapFrom(source => source.EntryDateTime.Year));
+                configuration.CreateMap<AttendanceCreateRequest, Attendance>()
+                    .ForMember(destination => destination.EntryTimestamp,
+                        options => options.ConvertUsing<DateTimeToTimestampFormatter, DateTime>(source =>
+                            source.EntryDateTime))
+                    .ForMember(destination => destination.EntryDate,
+                        options => options.MapFrom(source => source.EntryDateTime.Date))
+                    .ForMember(destination => destination.Month,
+                        options => options.MapFrom(source => source.EntryDateTime.Month))
+                    .ForMember(destination => destination.Year,
+                        options => options.MapFrom(source => source.EntryDateTime.Year));
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

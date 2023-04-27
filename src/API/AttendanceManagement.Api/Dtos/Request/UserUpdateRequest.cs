@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AttendanceManagement.Api.Dtos
+namespace AttendanceManagement.Api.Dtos.Request
 {
-    public class UserUpdateDto
+    public class UserUpdateRequest
     {
         [Required]
         public string? UserName { get; set; }

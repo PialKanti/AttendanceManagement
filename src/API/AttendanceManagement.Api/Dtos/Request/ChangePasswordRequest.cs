@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AttendanceManagement.Api.Dtos
+namespace AttendanceManagement.Api.Dtos.Request
 {
-    public class ChangePasswordDto
+    public class ChangePasswordRequest
     {
         [Required]
         public string? OldPassword { get; set; }

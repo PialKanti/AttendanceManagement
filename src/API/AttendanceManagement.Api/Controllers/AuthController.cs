@@ -1,4 +1,5 @@
 ﻿using AttendanceManagement.Api.Dtos;
+using AttendanceManagement.Api.Dtos.Request;
 using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Api.Services;
 using AttendanceManagement.Application.Interfaces;
@@ -21,7 +22,7 @@ namespace AttendanceManagement.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserDto userDto)
+        public async Task<IActionResult> Login([FromBody] LoginUserRequest userDto)
         {
             var user = await _userRepository.GetByUserNameAsync(userDto.Username);
             if (user == null)
