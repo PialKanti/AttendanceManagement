@@ -44,16 +44,17 @@ namespace AttendanceManagement.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<MonthlyAttendanceGroupDto>> GetUserYearlyAttendancesAsync(string userId, int year)
+        public IEnumerable<MonthlyAttendanceGroupDto> GetUserYearlyAttendancesAsync(string userId, int year)
         {
-            return await _dbContext.Attendances
+            // TODO: Need to make the method awaitable and query simpler. Currently making this method awaitable throws an exception. 
+            return _dbContext.Attendances
                 .Where(attendance => attendance.UserId == userId && attendance.Year == year)
                 .GroupBy(attendance => attendance.Month)
                 .Select(group => new MonthlyAttendanceGroupDto
                 {
                     Month = group.Key,
                     Attendances = group.OrderBy(a => a.EntryTimestamp).Select(attendance => _mapper.Map<AttendanceDto>(attendance)).ToList()
-                }).ToListAsync();
+                }).ToList();
         }
 
         public async Task UpdateAsync(string id, Attendance attendance)
