@@ -1,4 +1,5 @@
-﻿using AttendanceManagement.Infrastructure.Identity;
+﻿using AttendanceManagement.Infrastructure.Data.Interceptors;
+using AttendanceManagement.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,9 +11,14 @@ namespace AttendanceManagement.Infrastructure
     {
         public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
         {
-            services.AddDbContext<AppIdentityDbContext>(options =>
+            services.AddSingleton<AuditableEntitiesChangeInterceptor>();
+
+            services.AddDbContext<AppIdentityDbContext>((serviceProvider, options) =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("AttendanceManagementContext"));
+                var interceptor = serviceProvider.GetService<AuditableEntitiesChangeInterceptor>();
+
+                options.UseSqlServer(configuration.GetConnectionString("AttendanceManagementContext"))
+                        .AddInterceptors(interceptor);
             });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()

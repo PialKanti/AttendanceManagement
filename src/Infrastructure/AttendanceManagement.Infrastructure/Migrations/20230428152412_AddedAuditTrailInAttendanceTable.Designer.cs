@@ -4,6 +4,7 @@ using AttendanceManagement.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AttendanceManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    partial class AppIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230428152412_AddedAuditTrailInAttendanceTable")]
+    partial class AddedAuditTrailInAttendanceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,9 +30,10 @@ namespace AttendanceManagement.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedOn")
+                    b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("EntryDate")
@@ -43,9 +46,10 @@ namespace AttendanceManagement.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastModifiedOn")
+                    b.Property<DateTime>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Month")
@@ -141,9 +145,9 @@ namespace AttendanceManagement.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0d1652cb-86b4-4dd4-9c1a-07bd8d0c2d81",
+                            Id = "50ce6331-68cb-4d9c-ac3c-c33891a76f67",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1482d178-6fdb-4d88-8ba1-1196ab95d2c3",
+                            ConcurrencyStamp = "850159c8-aa34-40d6-9c18-34089da77761",
                             Email = "admin@test.com",
                             EmailConfirmed = false,
                             FirstName = "Default",
@@ -151,9 +155,9 @@ namespace AttendanceManagement.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@TEST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBRGLfqzNBdFOLCsgVP7TMXQg06s/lwZ96RoIym7u5jkbuNK/ePtbflwC6NuilWD7g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI1sK8sDyFJ5yoSO5W4dvArNAd3u7qPDSbi5PsCAUGvuoU7Hwv+PLhhGSjlRU7I/aQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c203cab2-0b6a-4c76-8e53-189f7fff7e19",
+                            SecurityStamp = "a73c4226-a29b-469b-9988-c57e1940d515",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -188,22 +192,22 @@ namespace AttendanceManagement.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "30f3e5e4-3d82-4fb0-9e3b-f517ea8a76b0",
-                            ConcurrencyStamp = "4b403810-3638-4504-b35b-afe72ac34c78",
+                            Id = "36081901-b9f6-4765-9d58-621b4d58c0a7",
+                            ConcurrencyStamp = "1db68f82-e77e-44e9-b613-1e396a7224a5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "bf6da5f9-fa28-430f-b68c-ccd1114467d2",
-                            ConcurrencyStamp = "bb1085ed-b46b-4fe3-b1d8-ed1638441e90",
+                            Id = "dd7612eb-511d-4c9a-a275-4e094ac32086",
+                            ConcurrencyStamp = "14053ca1-cf97-47cc-8122-b5fba4d2f052",
                             Name = "Hr",
                             NormalizedName = "HR"
                         },
                         new
                         {
-                            Id = "b5bd80be-e99b-4658-9100-51b4257b557d",
-                            ConcurrencyStamp = "309549cc-2056-4e9c-a55a-56194d32ca3a",
+                            Id = "1788e574-0054-444f-b36c-fe6c5b1e65ec",
+                            ConcurrencyStamp = "adb90d23-ae9c-4864-8fe3-269197608691",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -298,8 +302,8 @@ namespace AttendanceManagement.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "0d1652cb-86b4-4dd4-9c1a-07bd8d0c2d81",
-                            RoleId = "30f3e5e4-3d82-4fb0-9e3b-f517ea8a76b0"
+                            UserId = "50ce6331-68cb-4d9c-ac3c-c33891a76f67",
+                            RoleId = "36081901-b9f6-4765-9d58-621b4d58c0a7"
                         });
                 });
 

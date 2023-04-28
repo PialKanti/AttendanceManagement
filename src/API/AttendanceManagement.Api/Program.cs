@@ -23,6 +23,8 @@ builder.Services.AddAutoMapper();
 
 builder.Services.AddAuthServices(builder.Configuration);
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddApplicationServices();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

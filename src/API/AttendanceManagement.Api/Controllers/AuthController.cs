@@ -4,6 +4,7 @@ using AttendanceManagement.Api.Responses.Error;
 using AttendanceManagement.Api.Services;
 using AttendanceManagement.Application.Interfaces;
 using AttendanceManagement.Infrastructure.Identity;
+using AttendanceManagement.Infrastructure.ValueEncryptors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -38,11 +39,23 @@ namespace AttendanceManagement.Api.Controllers
                 return Unauthorized(new ErrorDto(errors));
             }
 
-            var accessToken = _tokenService.CreateToken(user);
+            var dateTime = DateTime.Now;
 
+            var accessToken = _tokenService.CreateToken(user);
             HttpContext.Response.Cookies.Append("X-Access-Token", accessToken, new CookieOptions
             {
-                Expires = DateTime.Now.AddMinutes(2),
+                Expires = dateTime.AddMinutes(2),
+                HttpOnly = true,
+                IsEssential = true,
+                Path = "/",
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+
+            var encryptor = new Base64ValueEncryptor();
+            HttpContext.Response.Cookies.Append("X-User", encryptor.Encrypt(user.UserName), new CookieOptions
+            {
+                Expires = dateTime.AddMinutes(2),
                 HttpOnly = true,
                 IsEssential = true,
                 Path = "/",

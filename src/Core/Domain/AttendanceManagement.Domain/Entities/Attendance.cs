@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AttendanceManagement.Domain.Entities
 {
-    public class Attendance : BaseEntity
+    public class Attendance : AuditableBaseEntity
     {
         [Required]
         public string UserId { get; set; }

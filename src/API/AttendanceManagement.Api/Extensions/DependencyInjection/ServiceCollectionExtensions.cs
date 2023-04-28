@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using AttendanceManagement.Application.Dtos;
+using AttendanceManagement.Infrastructure.ValueEncryptors;
 
 namespace AttendanceManagement.Api.Extensions.DependencyInjection
 {
