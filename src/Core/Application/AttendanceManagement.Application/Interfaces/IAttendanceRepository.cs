@@ -8,6 +8,6 @@ namespace AttendanceManagement.Application.Interfaces
         Task UpdateAsync(string id, T attendance);
         Task<T?> GetAsync(string id);
         Task<IEnumerable<AttendanceDto>> GetUserMonthlyAttendancesAsync(string userId, DateTime datetime);
-        IEnumerable<MonthlyAttendanceGroupDto> GetUserYearlyAttendancesAsync(string username, int year);
+        Task<IEnumerable<MonthlyAttendanceGroupDto>> GetUserYearlyAttendancesAsync(string username, int year);
     }
 }

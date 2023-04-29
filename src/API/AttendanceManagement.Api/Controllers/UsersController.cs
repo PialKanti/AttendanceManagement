@@ -92,7 +92,7 @@ namespace AttendanceManagement.Api.Controllers
             year ??= DateTime.UtcNow.Year;
             if (month == null)
             {
-                return Ok(_attendanceRepository.GetUserYearlyAttendancesAsync(user.Id, (int)year));
+                return Ok(await _attendanceRepository.GetUserYearlyAttendancesAsync(user.Id, (int)year));
             }
 
             var dateTime = new DateTime((int)year, (int)month, 1);
